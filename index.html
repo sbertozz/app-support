@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#ff5a8a">
+<meta name="theme-color" content="#fff6fa">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Supporto">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
@@ -28,21 +29,41 @@
   }
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{background:var(--bg)}
+html{min-height:100%;background:var(--bg);scroll-behavior:smooth}
 body{
-  min-height:100vh;font-family:var(--font);color:var(--text);
+  min-height:100vh;min-height:100dvh;font-family:var(--font);color:var(--text);
   background:
     radial-gradient(circle at 18% -8%,rgba(255,143,189,.42),transparent 34%),
     radial-gradient(circle at 100% 6%,rgba(175,82,222,.18),transparent 30%),
     linear-gradient(180deg,var(--bg),#fff 54%,#fff7fb);
   -webkit-tap-highlight-color:transparent;overscroll-behavior-y:none;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
 @media(prefers-color-scheme:dark){body{background:radial-gradient(circle at 18% -8%,rgba(255,90,138,.24),transparent 34%),radial-gradient(circle at 100% 6%,rgba(175,82,222,.18),transparent 30%),linear-gradient(180deg,var(--bg),#130d12 68%)}}
 button,a,[onclick]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 button{font:inherit}
 button,a{cursor:pointer}
 a{text-decoration:none;color:inherit}
-.wrap{max-width:430px;margin:0 auto;padding:18px 16px calc(96px + env(safe-area-inset-bottom))}
+body::before{
+  content:"";position:fixed;z-index:15;top:0;left:0;right:0;height:calc(76px + env(safe-area-inset-top));
+  background:linear-gradient(180deg,rgba(255,246,250,.96),rgba(255,246,250,.78) 62%,rgba(255,246,250,0));
+  pointer-events:none;
+}
+@media(prefers-color-scheme:dark){body::before{background:linear-gradient(180deg,rgba(24,17,22,.96),rgba(24,17,22,.78) 62%,rgba(24,17,22,0))}}
+.app-header{
+  position:fixed;top:0;left:0;right:0;z-index:30;padding:calc(8px + env(safe-area-inset-top)) 14px 8px;
+  background:rgba(255,246,250,.74);border-bottom:1px solid rgba(255,90,138,.10);
+  backdrop-filter:blur(24px) saturate(1.35);-webkit-backdrop-filter:blur(24px) saturate(1.35);
+}
+@media(prefers-color-scheme:dark){.app-header{background:rgba(24,17,22,.72);border-bottom-color:rgba(255,143,189,.12)}}
+.app-header-inner{max-width:430px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.app-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.app-brand img{width:38px;height:38px;border-radius:12px;box-shadow:0 8px 18px rgba(255,90,138,.22);display:block}
+.app-title{display:block;font-size:17px;line-height:1.1;font-weight:900;letter-spacing:-.25px;color:var(--text)}
+.app-subtitle{display:block;font-size:12px;line-height:1.25;color:var(--text3);font-weight:750;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px}
+.quick-help{border:0;border-radius:999px;padding:10px 13px;background:linear-gradient(135deg,var(--danger),var(--pink2));color:#fff;font-size:13px;font-weight:900;letter-spacing:.2px;box-shadow:0 10px 22px rgba(255,59,95,.22)}
+.quick-help:active{transform:scale(.96)}
+.wrap{max-width:430px;margin:0 auto;padding:calc(86px + env(safe-area-inset-top)) 16px calc(100px + env(safe-area-inset-bottom))}
 h1{font-size:32px;line-height:1.02;letter-spacing:-.8px;margin-bottom:10px}
 h2{font-size:24px;line-height:1.12;letter-spacing:-.35px;margin-bottom:12px}
 h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
@@ -53,12 +74,12 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 .nav{
-  position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:4px;
-  background:rgba(255,255,255,.76);border-top:1px solid rgba(255,90,138,.16);
-  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
-  padding:8px 10px calc(10px + env(safe-area-inset-bottom));z-index:20;
+  position:fixed;bottom:0;left:50%;right:auto;transform:translateX(-50%);width:min(100%,430px);display:flex;justify-content:center;gap:4px;
+  background:rgba(255,255,255,.80);border:1px solid rgba(255,90,138,.14);border-bottom:0;border-radius:26px 26px 0 0;
+  backdrop-filter:blur(26px) saturate(1.35);-webkit-backdrop-filter:blur(26px) saturate(1.35);
+  padding:9px 10px calc(10px + env(safe-area-inset-bottom));z-index:30;box-shadow:0 -14px 34px rgba(255,90,138,.12);
 }
-@media(prefers-color-scheme:dark){.nav{background:rgba(25,18,24,.78)}}
+@media(prefers-color-scheme:dark){.nav{background:rgba(25,18,24,.82);box-shadow:0 -14px 34px rgba(0,0,0,.28)}}
 .nav button{background:none;border:none;color:var(--text3);font-size:11px;font-weight:700;display:flex;flex:1;max-width:96px;flex-direction:column;align-items:center;gap:3px;padding:7px 10px;border-radius:18px;transition:all .18s ease}
 .nav button.active{color:var(--pink);background:rgba(255,90,138,.12)}
 .nav svg{width:23px;height:23px}
@@ -73,7 +94,7 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 }
 .card-flat{border:none;padding:0;margin-bottom:18px}
 
-.home-hero{position:relative;overflow:hidden;border-radius:30px;padding:24px 20px 20px;margin:8px 0 14px;background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(255,238,247,.76));border:1px solid rgba(255,255,255,.7);box-shadow:var(--shadow)}
+.home-hero{position:relative;overflow:hidden;border-radius:30px;padding:24px 20px 20px;margin:0 0 14px;background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(255,238,247,.76));border:1px solid rgba(255,255,255,.7);box-shadow:var(--shadow)}
 .home-hero::after{content:"";position:absolute;width:160px;height:160px;right:-58px;top:-54px;border-radius:50%;background:radial-gradient(circle,rgba(255,90,138,.34),transparent 68%)}
 .home-hero p{position:relative;margin-bottom:18px}
 .sos-big{position:relative;width:100%;padding:26px 20px;font-size:21px;font-weight:800;border:none;border-radius:24px;background:linear-gradient(135deg,var(--danger),var(--pink2));color:#fff;display:flex;flex-direction:column;align-items:center;gap:9px;transition:transform .12s ease,filter .12s ease;box-shadow:0 18px 34px rgba(255,59,95,.28)}
@@ -177,6 +198,18 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 </style>
 </head>
 <body>
+<header class="app-header">
+  <div class="app-header-inner">
+    <div class="app-brand">
+      <img src="icon.png" alt="">
+      <div>
+        <span class="app-title" id="app-title">Supporto</span>
+        <span class="app-subtitle" id="app-subtitle">Spazio sicuro</span>
+      </div>
+    </div>
+    <button class="quick-help" onclick="goTab('tab-help')">SOS</button>
+  </div>
+</header>
 
 <div class="wrap">
 
@@ -379,6 +412,18 @@ function newQuote(){
   document.getElementById('quote-text').textContent='"'+q+'"';
 }
 
+const TAB_META={
+  'tab-home':['Supporto','Spazio sicuro'],
+  'tab-stop':['Ferma','Modalità emergenza'],
+  'tab-diary':['Diario','Calendario eventi'],
+  'tab-help':['Aiuto','Mario · 338 218 8083']
+};
+function updateAppHeader(id){
+  const meta=TAB_META[id]||TAB_META['tab-home'];
+  const title=document.getElementById('app-title'),subtitle=document.getElementById('app-subtitle');
+  if(title)title.textContent=meta[0];
+  if(subtitle)subtitle.textContent=meta[1];
+}
 function goTab(id,btn){
   const tab=document.getElementById(id);
   if(!tab)return;
@@ -387,6 +432,7 @@ function goTab(id,btn){
   document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
   const activeBtn=btn||document.querySelector('.nav button[data-tab="'+id+'"]');
   if(activeBtn)activeBtn.classList.add('active');
+  updateAppHeader(id);
   if(id==='tab-diary'){renderCalendar();renderEntries();}
   try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);}
 }
@@ -564,7 +610,7 @@ function renderEntries(){
   }).join('')+'</div>';
 }
 
-loadData();updateStats();renderCalendar();renderEntries();newQuote();
+loadData();updateStats();renderCalendar();renderEntries();newQuote();updateAppHeader('tab-home');
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
 </script>
 </body>
