@@ -36,7 +36,7 @@ body{
     radial-gradient(circle at 18% -8%,rgba(255,143,189,.42),transparent 34%),
     radial-gradient(circle at 100% 6%,rgba(175,82,222,.18),transparent 30%),
     linear-gradient(180deg,var(--bg),#fff 54%,#fff7fb);
-  -webkit-tap-highlight-color:transparent;overscroll-behavior-y:none;
+  -webkit-tap-highlight-color:transparent;overscroll-behavior-y:none;touch-action:pan-y;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
 @media(prefers-color-scheme:dark){body{background:radial-gradient(circle at 18% -8%,rgba(255,90,138,.24),transparent 34%),radial-gradient(circle at 100% 6%,rgba(175,82,222,.18),transparent 30%),linear-gradient(180deg,var(--bg),#130d12 68%)}}
@@ -63,7 +63,7 @@ body::before{
 .app-subtitle{display:block;font-size:12px;line-height:1.25;color:var(--text3);font-weight:750;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px}
 .quick-help{border:0;border-radius:999px;padding:10px 13px;background:linear-gradient(135deg,var(--danger),var(--pink2));color:#fff;font-size:13px;font-weight:900;letter-spacing:.2px;box-shadow:0 10px 22px rgba(255,59,95,.22)}
 .quick-help:active{transform:scale(.96)}
-.wrap{max-width:430px;margin:0 auto;padding:calc(86px + env(safe-area-inset-top)) 16px calc(100px + env(safe-area-inset-bottom))}
+.wrap{max-width:430px;margin:0 auto;padding:calc(86px + env(safe-area-inset-top)) 16px calc(100px + env(safe-area-inset-bottom));touch-action:pan-y}
 h1{font-size:32px;line-height:1.02;letter-spacing:-.8px;margin-bottom:10px}
 h2{font-size:24px;line-height:1.12;letter-spacing:-.35px;margin-bottom:12px}
 h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
@@ -71,7 +71,11 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .hidden{display:none!important}
 .tab{display:none}
 .tab.active{display:block;animation:fade .24s ease-out}
+body.swipe-next .tab.active{animation:slideFromRight .24s ease-out}
+body.swipe-prev .tab.active{animation:slideFromLeft .24s ease-out}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideFromRight{from{opacity:.35;transform:translateX(34px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideFromLeft{from{opacity:.35;transform:translateX(-34px)}to{opacity:1;transform:translateX(0)}}
 
 .nav{
   position:fixed;bottom:0;left:50%;right:auto;transform:translateX(-50%);width:min(100%,430px);display:flex;justify-content:center;gap:4px;
@@ -418,11 +422,33 @@ const TAB_META={
   'tab-diary':['Diario','Calendario eventi'],
   'tab-help':['Aiuto','Mario · 338 218 8083']
 };
+const TAB_ORDER=['tab-home','tab-stop','tab-diary','tab-help'];
 function updateAppHeader(id){
   const meta=TAB_META[id]||TAB_META['tab-home'];
   const title=document.getElementById('app-title'),subtitle=document.getElementById('app-subtitle');
   if(title)title.textContent=meta[0];
   if(subtitle)subtitle.textContent=meta[1];
+}
+function currentTabId(){
+  const active=document.querySelector('.tab.active');
+  return active?active.id:'tab-home';
+}
+let swipeAnimTimer=null;
+function setSwipeAnimation(direction){
+  document.body.classList.remove('swipe-next','swipe-prev');
+  if(!direction)return;
+  void document.body.offsetWidth;
+  document.body.classList.add(direction>0?'swipe-next':'swipe-prev');
+  clearTimeout(swipeAnimTimer);
+  swipeAnimTimer=setTimeout(()=>document.body.classList.remove('swipe-next','swipe-prev'),280);
+}
+function swipeToTab(direction){
+  const index=TAB_ORDER.indexOf(currentTabId());
+  if(index<0)return;
+  const next=Math.min(Math.max(index+direction,0),TAB_ORDER.length-1);
+  if(next===index)return;
+  setSwipeAnimation(direction);
+  goTab(TAB_ORDER[next]);
 }
 function goTab(id,btn){
   const tab=document.getElementById(id);
@@ -610,7 +636,40 @@ function renderEntries(){
   }).join('')+'</div>';
 }
 
-loadData();updateStats();renderCalendar();renderEntries();newQuote();updateAppHeader('tab-home');
+
+function setupSwipeNavigation(){
+  const area=document.querySelector('.wrap')||document;
+  let sx=0,sy=0,startTime=0,pointerId=null,tracking=false;
+  function isIgnoredTarget(target){
+    return !!(target&&target.closest&&target.closest('.nav,.app-header,.contact-actions'));
+  }
+  function start(x,y,id,target){
+    if(isIgnoredTarget(target))return;
+    sx=x;sy=y;startTime=Date.now();pointerId=id;tracking=true;
+  }
+  function finish(x,y,id){
+    if(!tracking)return;
+    if(pointerId!==null&&id!==null&&id!==pointerId)return;
+    tracking=false;
+    const dx=x-sx,dy=y-sy,dt=Date.now()-startTime;
+    if(dt>900)return;
+    if(Math.abs(dx)<68)return;
+    if(Math.abs(dx)<Math.abs(dy)*1.25)return;
+    swipeToTab(dx<0?1:-1);
+  }
+  function cancel(){tracking=false;pointerId=null;}
+  if(window.PointerEvent){
+    area.addEventListener('pointerdown',e=>{if(e.button&&e.button!==0)return;start(e.clientX,e.clientY,e.pointerId,e.target);},{passive:true});
+    area.addEventListener('pointerup',e=>finish(e.clientX,e.clientY,e.pointerId),{passive:true});
+    area.addEventListener('pointercancel',cancel,{passive:true});
+  }else{
+    area.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;const t=e.touches[0];start(t.clientX,t.clientY,null,e.target);},{passive:true});
+    area.addEventListener('touchend',e=>{if(!e.changedTouches.length)return;const t=e.changedTouches[0];finish(t.clientX,t.clientY,null);},{passive:true});
+    area.addEventListener('touchcancel',cancel,{passive:true});
+  }
+}
+
+loadData();updateStats();renderCalendar();renderEntries();newQuote();updateAppHeader('tab-home');setupSwipeNavigation();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
 </script>
 </body>
