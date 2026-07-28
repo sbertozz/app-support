@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a1a1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Supporto">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<title>Supporto</title>
+<style>
+:root{
+  --text:#1a1a1a;--text2:#666;--text3:#999;
+  --surface:#fff;--border:#e5e5e5;
+  --danger:#dc2626;--positive:#16a34a;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+@media(prefers-color-scheme:dark){
+  :root{--text:#f5f5f5;--text2:#aaa;--text3:#777;--surface:#1a1a1a;--border:#333;}
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--text);background:var(--surface);-webkit-tap-highlight-color:transparent}
+.wrap{max-width:420px;margin:0 auto;padding:16px 16px 88px}
+h2{font-size:20px;font-weight:600;margin-bottom:12px}
+h3{font-size:16px;font-weight:600;margin-bottom:8px}
+p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
+.tab{display:none}
+.tab.active{display:block;animation:fade .25s ease-out}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:var(--surface);border-top:1px solid var(--border);padding:6px 0 14px;z-index:10}
+.nav button{background:none;border:none;color:var(--text3);font-size:11px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 14px;transition:color .15s}
+.nav button.active{color:var(--text)}
+.nav svg{width:24px;height:24px}
+
+.card{border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;background:transparent}
+.card-flat{border:none;padding:0;margin-bottom:20px}
+
+.sos-big{width:100%;padding:28px 20px;font-size:20px;font-weight:600;border:none;border-radius:16px;background:var(--danger);color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .1s,opacity .1s;margin-bottom:6px}
+.sos-big:active{transform:scale(.97);opacity:.92}
+.sos-big svg{width:32px;height:32px}
+.sos-sub{text-align:center;font-size:13px;color:var(--text3);margin-bottom:20px}
+
+.quote-box{text-align:center;padding:20px 16px;border:1px solid var(--border);border-radius:14px;margin-bottom:14px}
+.quote-text{font-size:16px;font-weight:600;line-height:1.5;font-style:italic}
+.quote-refresh{margin-top:10px;font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer}
+
+.timer-wrap{display:flex;flex-direction:column;align-items:center;padding:10px 0}
+.timer-svg{width:160px;height:160px}
+.timer-svg circle{fill:none}
+.timer-track{stroke:var(--border);stroke-width:5}
+.timer-fill{stroke:var(--text);stroke-width:5;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1s linear}
+.timer-text{font-size:36px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:12px;letter-spacing:1px}
+.timer-btns{display:flex;gap:10px;margin-top:16px}
+.timer-btns button{padding:12px 28px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-weight:600;font-size:15px}
+.timer-btns button.primary{background:var(--text);color:var(--surface);border-color:var(--text)}
+.timer-done{text-align:center;padding:14px;border-radius:12px;background:rgba(22,163,74,.1);color:var(--positive);font-weight:600;margin-top:14px}
+
+.win-btn{width:100%;padding:16px;border:2px solid var(--positive);border-radius:14px;background:rgba(22,163,74,.08);color:var(--positive);font-size:16px;font-weight:600;cursor:pointer;margin-bottom:14px;transition:all .15s}
+.win-btn:active{transform:scale(.98)}
+
+.breath-wrap{display:flex;flex-direction:column;align-items:center;padding:10px 0}
+.breath-circle{width:100px;height:100px;border-radius:50%;border:3px solid var(--text);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;text-align:center;transition:all 4s ease-in-out}
+.breath-circle.inhale{transform:scale(1.5);border-color:var(--positive);background:rgba(22,163,74,.08)}
+.breath-circle.exhale{transform:scale(1);border-color:var(--text);background:transparent}
+.breath-toggle{margin-top:10px;padding:8px 20px;border:1px solid var(--border);border-radius:10px;background:transparent;cursor:pointer;font-size:14px}
+.breath-tabs{display:flex;gap:8px;margin-bottom:10px}
+.breath-tabs button{flex:1;padding:8px;border:1px solid var(--border);border-radius:8px;background:transparent;cursor:pointer;font-size:13px}
+.breath-tabs button.active{background:var(--text);color:var(--surface);border-color:var(--text)}
+
+.sense-list{list-style:none;padding:0;margin:0}
+.sense-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s}
+.sense-item:last-child{border-bottom:none}
+.sense-item.done{opacity:.45}
+.sense-check{width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.sense-item.done .sense-check{background:var(--positive);border-color:var(--positive)}
+.sense-item.done .sense-check::after{content:'';width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);margin-bottom:2px}
+.sense-text{font-size:15px}
+.sense-num{width:26px;height:26px;border-radius:50%;background:var(--text);color:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+
+.dist-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.dist-grid button{padding:14px 10px;border:1px solid var(--border);border-radius:12px;background:transparent;color:var(--text);cursor:pointer;font-size:14px;text-align:center;transition:all .15s;line-height:1.3}
+.dist-grid button:active{transform:scale(.97)}
+.dist-grid button.done{background:rgba(22,163,74,.12);border-color:var(--positive);color:var(--positive)}
+
+.diary-label{font-size:14px;color:var(--text2);margin-bottom:8px;display:block}
+.intensity-row{display:flex;gap:6px;margin-bottom:16px}
+.intensity-btn{flex:1;padding:10px 0;border:1.5px solid var(--border);border-radius:10px;background:transparent;cursor:pointer;font-size:15px;font-weight:600;transition:all .15s}
+.intensity-btn.selected{background:var(--text);color:var(--surface);border-color:var(--text)}
+.diary-textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;background:transparent;color:var(--text);font-size:15px;resize:vertical;min-height:70px;margin-bottom:12px}
+.diary-save{width:100%;padding:14px;border:none;border-radius:12px;background:var(--text);color:var(--surface);font-weight:600;font-size:16px;cursor:pointer}
+
+.stats-bar{display:flex;gap:10px;margin-bottom:14px}
+.stat-box{flex:1;text-align:center;padding:14px 8px;border:1px solid var(--border);border-radius:12px}
+.stat-num{font-size:28px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat-label{font-size:12px;color:var(--text3);margin-top:2px}
+
+.entry-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.entry-item:last-child{border-bottom:none}
+.entry-emoji{font-size:22px;line-height:1}
+.entry-body{flex:1}
+.entry-time{font-size:12px;color:var(--text3)}
+.entry-mood{font-weight:600;font-size:15px;margin-top:2px}
+.entry-note{font-size:14px;color:var(--text2);margin-top:3px}
+
+.contact-big{display:flex;align-items:center;justify-content:space-between;padding:18px;border:1px solid var(--border);border-radius:14px;gap:12px}
+.contact-info .contact-name{font-weight:600;font-size:17px}
+.contact-info .contact-num{font-size:15px;color:var(--text2);margin-top:2px}
+.contact-actions{display:flex;gap:8px;flex-shrink:0}
+.contact-actions a{padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.contact-actions .call-btn{background:var(--text);color:var(--surface)}
+.contact-actions .msg-btn{background:rgba(22,163,74,.12);color:var(--positive);border:1px solid var(--positive)}
+
+.hidden{display:none!important}
+.section-title{font-size:18px;font-weight:600;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<!-- HOME -->
+<div class="tab active" id="tab-home">
+  <div class="card-flat" style="text-align:center;margin-top:10px">
+    <p style="font-size:15px;color:var(--text2);margin-bottom:18px">Se l'impulso è forte, premi qui.</p>
+    <button class="sos-big" onclick="goTab('tab-stop')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>
+      Ferma l'impulso
+    </button>
+    <p class="sos-sub">Resistere 10 minuti cambia tutto.</p>
+  </div>
+  <div class="quote-box">
+    <div class="quote-text" id="quote-text">"Un impulso dura in media 15 minuti. Tu puoi aspettare."</div>
+    <button class="quote-refresh" onclick="newQuote()">↻ Cambia frase</button>
+  </div>
+</div>
+
+<!-- STOP -->
+<div class="tab" id="tab-stop">
+  <p class="section-title">Ferma l'impulso</p>
+  <button class="win-btn" onclick="markWin()">✓ Ce l'ho fatta — ho resistito</button>
+
+  <div class="card">
+    <p style="font-size:14px;color:var(--text2);text-align:center;margin-bottom:4px">Resisti 10 minuti. L'urgenza passerà.</p>
+    <div class="timer-wrap">
+      <svg class="timer-svg" viewBox="0 0 140 140">
+        <circle class="timer-track" cx="70" cy="70" r="58"/>
+        <circle class="timer-fill" id="timer-circle" cx="70" cy="70" r="58" stroke-dasharray="364.4" stroke-dashoffset="0"/>
+      </svg>
+      <div class="timer-text" id="timer-text">10:00</div>
+      <div class="timer-btns">
+        <button class="primary" id="timer-btn" onclick="toggleTimer()">Inizia</button>
+        <button onclick="resetTimer()">Reset</button>
+      </div>
+      <div id="timer-done" class="hidden timer-done">Brava. Hai resistito 10 minuti. L'urgenza è passata.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="breath-tabs">
+      <button class="active" onclick="setBreathType('square',this)">Quadrato</button>
+      <button onclick="setBreathType('478',this)">4-7-8</button>
+    </div>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:8px" id="breath-desc">Segui il cerchio. Inspira quando cresce.</p>
+    <div class="breath-wrap">
+      <div class="breath-circle" id="breath-circle">Inspira</div>
+      <button class="breath-toggle" id="breath-toggle" onclick="toggleBreath()">Avvia</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:15px;font-weight:600;margin-bottom:4px">Tocca ciò che hai fatto</h3>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:8px">5-4-3-2-1 — torna nel presente.</p>
+    <ul class="sense-list">
+      <li class="sense-item" onclick="toggleSense(this)"><span class="sense-num">5</span><span class="sense-text">Cose che vedi ora</span><span class="sense-check"></span></li>
+      <li class="sense-item" onclick="toggleSense(this)"><span class="sense-num">4</span><span class="sense-text">Cose che senti sulla pelle</span><span class="sense-check"></span></li>
+      <li class="sense-item" onclick="toggleSense(this)"><span class="sense-num">3</span><span class="sense-text">Suoni che senti</span><span class="sense-check"></span></li>
+      <li class="sense-item" onclick="toggleSense(this)"><span class="sense-num">2</span><span class="sense-text">Odori intorno a te</span><span class="sense-check"></span></li>
+      <li class="sense-item" onclick="toggleSense(this)"><span class="sense-num">1</span><span class="sense-text">Sapore nella bocca</span><span class="sense-check"></span></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:15px;font-weight:600;margin-bottom:4px">Fai una cosa</h3>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Tocca quella che hai fatto.</p>
+    <div class="dist-grid">
+      <button onclick="markDone(this)">Acqua fredda sul viso</button>
+      <button onclick="markDone(this)">Cammina 5 min</button>
+      <button onclick="markDone(this)">Scrivi 3 righe</button>
+      <button onclick="markDone(this)">Musica forte</button>
+      <button onclick="markDone(this)">Stretch 2 min</button>
+      <button onclick="markDone(this)">Chiama Mario</button>
+    </div>
+  </div>
+</div>
+
+<!-- DIARY -->
+<div class="tab" id="tab-diary">
+  <p class="section-title">Diario</p>
+  <div class="stats-bar">
+    <div class="stat-box"><div class="stat-num" id="stat-wins">0</div><div class="stat-label">Resistenze</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-entries">0</div><div class="stat-label">Entry</div></div>
+  </div>
+
+  <div class="card">
+    <label class="diary-label">Come ti senti?</label>
+    <div class="mood-row" id="diary-moods" style="display:flex;justify-content:space-between;gap:8px;margin-top:10px">
+      <button class="mood-btn" data-mood="Ansia" onclick="selectDiaryMood(this)" style="flex:1;padding:10px 4px;border:1.5px solid var(--border);border-radius:12px;background:transparent;cursor:pointer;font-size:28px;line-height:1;transition:all .15s">😰</button>
+      <button class="mood-btn" data-mood="Tristezza" onclick="selectDiaryMood(this)" style="flex:1;padding:10px 4px;border:1.5px solid var(--border);border-radius:12px;background:transparent;cursor:pointer;font-size:28px;line-height:1;transition:all .15s">😢</button>
+      <button class="mood-btn" data-mood="Rabbia" onclick="selectDiaryMood(this)" style="flex:1;padding:10px 4px;border:1.5px solid var(--border);border-radius:12px;background:transparent;cursor:pointer;font-size:28px;line-height:1;transition:all .15s">😠</button>
+      <button class="mood-btn" data-mood="Vuoto" onclick="selectDiaryMood(this)" style="flex:1;padding:10px 4px;border:1.5px solid var(--border);border-radius:12px;background:transparent;cursor:pointer;font-size:28px;line-height:1;transition:all .15s">😶</button>
+      <button class="mood-btn" data-mood="Vergogna" onclick="selectDiaryMood(this)" style="flex:1;padding:10px 4px;border:1.5px solid var(--border);border-radius:12px;background:transparent;cursor:pointer;font-size:28px;line-height:1;transition:all .15s">😳</button>
+    </div>
+
+    <label class="diary-label" style="margin-top:16px">Quanto forte è l'impulso?</label>
+    <div class="intensity-row">
+      <button class="intensity-btn" onclick="selectInt(this,1)">1</button>
+      <button class="intensity-btn" onclick="selectInt(this,2)">2</button>
+      <button class="intensity-btn" onclick="selectInt(this,3)">3</button>
+      <button class="intensity-btn" onclick="selectInt(this,4)">4</button>
+      <button class="intensity-btn" onclick="selectInt(this,5)">5</button>
+    </div>
+    <div class="intensity-row">
+      <button class="intensity-btn" onclick="selectInt(this,6)">6</button>
+      <button class="intensity-btn" onclick="selectInt(this,7)">7</button>
+      <button class="intensity-btn" onclick="selectInt(this,8)">8</button>
+      <button class="intensity-btn" onclick="selectInt(this,9)">9</button>
+      <button class="intensity-btn" onclick="selectInt(this,10)">10</button>
+    </div>
+
+    <label class="diary-label" style="margin-top:16px">Cosa è successo prima? (opzionale)</label>
+    <textarea class="diary-textarea" id="diary-note" placeholder="Dove eri? Cosa pensavi?"></textarea>
+    <button class="diary-save" onclick="saveEntry()">Salva</button>
+  </div>
+  <div id="entries-list"></div>
+</div>
+
+<!-- HELP -->
+<div class="tab" id="tab-help">
+  <p class="section-title">Aiuto</p>
+  <div class="contact-big">
+    <div class="contact-info">
+      <div class="contact-name">Mario</div>
+      <div class="contact-num">338 218 8083</div>
+    </div>
+    <div class="contact-actions">
+      <a class="call-btn" href="tel:3382188083">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Chiama
+      </a>
+      <a class="msg-btn" href="https://wa.me/393382188083" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        Messaggia
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="active" onclick="goTab('tab-home',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home
+  </button>
+  <button onclick="goTab('tab-stop',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>Ferma
+  </button>
+  <button onclick="goTab('tab-diary',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Diario
+  </button>
+  <button onclick="goTab('tab-help',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Aiuto
+  </button>
+</div>
+
+</div>
+
+<script>
+const quotes=[
+  "Un impulso dura in media 15 minuti. Tu puoi aspettare.",
+  "Hai già resistito prima. Puoi farlo anche ora.",
+  "Non devi essere perfetta. Devi solo resistere un minuto in più.",
+  "Il corpo mente quando ha paura. Tu sai la verità.",
+  "Ogni volta che resisti, ti riprendi un pezzo di te.",
+  "Non è debolezza chiedere aiuto. È coraggio.",
+  "Respira. Non devi decidere nulla adesso.",
+  "Sei più forte di quello che il disturbo ti dice."
+];
+function newQuote(){
+  const q=quotes[Math.floor(Math.random()*quotes.length)];
+  document.getElementById('quote-text').textContent='"'+q+'"';
+}
+
+function goTab(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn){document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+}
+
+const CIRC=364.4;
+let ti=null,ts=600,tr=false;
+function ft(s){const m=Math.floor(s/60).toString().padStart(2,'0');const e=(s%60).toString().padStart(2,'0');return m+':'+e;}
+function updateCircle(){document.getElementById('timer-circle').style.strokeDashoffset=CIRC*(1-ts/600);}
+function toggleTimer(){
+  const b=document.getElementById('timer-btn');
+  if(tr){clearInterval(ti);tr=false;b.textContent='Riprendi';b.classList.add('primary');}
+  else{tr=true;b.textContent='Pausa';b.classList.remove('primary');ti=setInterval(()=>{ts--;document.getElementById('timer-text').textContent=ft(ts);updateCircle();if(ts<=0){clearInterval(ti);tr=false;document.getElementById('timer-done').classList.remove('hidden');b.textContent='Fatto';b.disabled=true;}},1000);}
+}
+function resetTimer(){clearInterval(ti);tr=false;ts=600;document.getElementById('timer-text').textContent='10:00';updateCircle();document.getElementById('timer-done').classList.add('hidden');const b=document.getElementById('timer-btn');b.textContent='Inizia';b.disabled=false;b.classList.add('primary');}
+
+let breathType='square',bi=null,br=false;
+function setBreathType(type,btn){
+  breathType=type;
+  document.querySelectorAll('.breath-tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('breath-desc').textContent=type==='square'?'Segui il cerchio. Inspira quando cresce.':'Inspira 4, trattieni 7, espira 8.';
+  if(br){toggleBreath();toggleBreath();}
+}
+function toggleBreath(){
+  const c=document.getElementById('breath-circle'),b=document.getElementById('breath-toggle');
+  if(br){clearInterval(bi);br=false;b.textContent='Avvia';c.className='breath-circle';c.textContent='Inspira';return;}
+  br=true;b.textContent='Ferma';
+  if(breathType==='square'){
+    let i=true;c.className='breath-circle inhale';c.textContent='Inspira';
+    bi=setInterval(()=>{i=!i;if(i){c.className='breath-circle inhale';c.textContent='Inspira';}else{c.className='breath-circle exhale';c.textContent='Espirai';}},4000);
+  }else{
+    let step=0;c.className='breath-circle inhale';c.textContent='Inspira 4';
+    bi=setInterval(()=>{step=(step+1)%3;if(step===0){c.className='breath-circle inhale';c.textContent='Inspira 4';}else if(step===1){c.className='breath-circle';c.textContent='Trattieni 7';}else{c.className='breath-circle exhale';c.textContent='Espirai 8';}},4000);
+  }
+}
+
+function toggleSense(el){el.classList.toggle('done');}
+function markDone(btn){btn.classList.toggle('done');}
+
+let wins=0,entries=[];
+const emojiMap={'Ansia':'😰','Tristezza':'😢','Rabbia':'😠','Vuoto':'😶','Vergogna':'😳','✓ Resistito':'✅'};
+function loadData(){try{const d=JSON.parse(localStorage.getItem('dca_data')||'{}');wins=d.wins||0;entries=d.entries||[];}catch(e){}}
+function saveData(){localStorage.setItem('dca_data',JSON.stringify({wins,entries}));}
+function updateStats(){document.getElementById('stat-wins').textContent=wins;document.getElementById('stat-entries').textContent=entries.length;}
+function renderEntries(){
+  const c=document.getElementById('entries-list');
+  if(!entries.length){c.innerHTML='';return;}
+  c.innerHTML='<div class="card">'+entries.map(en=>`<div class="entry-item"><span class="entry-emoji">${emojiMap[en.mood]||'📝'}</span><div class="entry-body"><div class="entry-time">${en.time}${en.intensity!=='—'?' · intensità '+en.intensity+'/10':''}</div><div class="entry-mood">${en.mood}</div>${en.note?`<div class="entry-note">${en.note}</div>`:''}</div></div>`).join('')+'</div>';
+}
+function markWin(){
+  wins++;const time=new Date().toLocaleString('it-IT',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  entries.unshift({time,mood:'✓ Resistito',intensity:'—',note:'Ho resistito all\\'impulso.'});
+  saveData();updateStats();renderEntries();alert('Registrato. Brava.');
+}
+
+let selectedMood='',selectedInt=0;
+function selectDiaryMood(btn){document.querySelectorAll('#diary-moods .mood-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedMood=btn.dataset.mood;}
+function selectInt(btn,n){document.querySelectorAll('.intensity-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedInt=n;}
+function saveEntry(){
+  if(!selectedMood){alert('Seleziona come ti senti');return;}
+  if(!selectedInt){alert('Seleziona l\\'intensità');return;}
+  const note=document.getElementById('diary-note').value;
+  const time=new Date().toLocaleString('it-IT',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  entries.unshift({time,mood:selectedMood,intensity:selectedInt,note});
+  saveData();updateStats();renderEntries();
+  document.getElementById('diary-note').value='';
+  document.querySelectorAll('#diary-moods .mood-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.intensity-btn').forEach(b=>b.classList.remove('selected'));
+  selectedMood='';selectedInt=0;
+}
+
+loadData();updateStats();renderEntries();newQuote();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
+</script>
+</body>
+</html>
