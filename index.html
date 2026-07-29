@@ -29,9 +29,9 @@
   }
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{min-height:100%;background:var(--bg);scroll-behavior:smooth}
+html{height:100%;background:var(--bg)}
 body{
-  min-height:100vh;min-height:100dvh;font-family:var(--font);color:var(--text);
+  position:fixed;inset:0;width:100%;height:100vh;height:100dvh;overflow:hidden;font-family:var(--font);color:var(--text);
   background:
     radial-gradient(circle at 18% -8%,rgba(255,143,189,.42),transparent 34%),
     radial-gradient(circle at 100% 6%,rgba(175,82,222,.18),transparent 30%),
@@ -63,19 +63,26 @@ body::before{
 .app-subtitle{display:block;font-size:12px;line-height:1.25;color:var(--text3);font-weight:750;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px}
 .quick-help{border:0;border-radius:999px;padding:10px 13px;background:linear-gradient(135deg,var(--danger),var(--pink2));color:#fff;font-size:13px;font-weight:900;letter-spacing:.2px;box-shadow:0 10px 22px rgba(255,59,95,.22)}
 .quick-help:active{transform:scale(.96)}
-.wrap{max-width:430px;margin:0 auto;padding:calc(86px + env(safe-area-inset-top)) 16px calc(100px + env(safe-area-inset-bottom));touch-action:pan-y}
+.wrap{max-width:430px;margin:0 auto;height:100vh;height:100dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(86px + env(safe-area-inset-top)) 16px calc(100px + env(safe-area-inset-bottom));touch-action:pan-y;scrollbar-width:none}.wrap::-webkit-scrollbar{display:none}
 h1{font-size:32px;line-height:1.02;letter-spacing:-.8px;margin-bottom:10px}
 h2{font-size:24px;line-height:1.12;letter-spacing:-.35px;margin-bottom:12px}
 h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
 p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .hidden{display:none!important}
-.tab{display:none}
-.tab.active{display:block;animation:fade .24s ease-out}
-body.swipe-next .tab.active{animation:slideFromRight .24s ease-out}
-body.swipe-prev .tab.active{animation:slideFromLeft .24s ease-out}
+.tabs-viewport{position:relative}
+.tab{display:none;will-change:transform,opacity}
+.tab.active,.tab.leaving{display:block}
+.tab.leaving{position:absolute;top:0;left:0;right:0;width:100%;pointer-events:none}
+.tab.enter-next{animation:tabEnterNext .28s cubic-bezier(.2,.8,.2,1) both}
+.tab.enter-prev{animation:tabEnterPrev .28s cubic-bezier(.2,.8,.2,1) both}
+.tab.leave-next{animation:tabLeaveNext .28s cubic-bezier(.2,.8,.2,1) both}
+.tab.leave-prev{animation:tabLeavePrev .28s cubic-bezier(.2,.8,.2,1) both}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideFromRight{from{opacity:.35;transform:translateX(34px)}to{opacity:1;transform:translateX(0)}}
-@keyframes slideFromLeft{from{opacity:.35;transform:translateX(-34px)}to{opacity:1;transform:translateX(0)}}
+@keyframes tabEnterNext{from{opacity:.55;transform:translate3d(28px,0,0) scale(.992)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+@keyframes tabEnterPrev{from{opacity:.55;transform:translate3d(-28px,0,0) scale(.992)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+@keyframes tabLeaveNext{from{opacity:1;transform:translate3d(0,0,0) scale(1)}to{opacity:.30;transform:translate3d(-22px,0,0) scale(.992)}}
+@keyframes tabLeavePrev{from{opacity:1;transform:translate3d(0,0,0) scale(1)}to{opacity:.30;transform:translate3d(22px,0,0) scale(.992)}}
+@media(prefers-reduced-motion:reduce){.tab.enter-next,.tab.enter-prev,.tab.leave-next,.tab.leave-prev{animation:none}}
 
 .nav{
   position:fixed;bottom:0;left:50%;right:auto;transform:translateX(-50%);width:min(100%,430px);display:flex;justify-content:center;gap:4px;
@@ -216,6 +223,7 @@ body.swipe-prev .tab.active{animation:slideFromLeft .24s ease-out}
 </header>
 
 <div class="wrap">
+<main class="tabs-viewport" id="tabs-viewport">
 
 <!-- HOME -->
 <div class="tab active" id="tab-home">
@@ -382,6 +390,8 @@ body.swipe-prev .tab.active{animation:slideFromLeft .24s ease-out}
   </div>
 </div>
 
+</main>
+
 <!-- NAV -->
 <div class="nav">
   <button class="active" data-tab="tab-home" onclick="goTab('tab-home',this)">
@@ -423,6 +433,9 @@ const TAB_META={
   'tab-help':['Aiuto','Mario · 338 218 8083']
 };
 const TAB_ORDER=['tab-home','tab-stop','tab-diary','tab-help'];
+const TAB_ANIM_MS=280;
+const tabScrollPositions={};
+let tabAnimTimer=null;
 function updateAppHeader(id){
   const meta=TAB_META[id]||TAB_META['tab-home'];
   const title=document.getElementById('app-title'),subtitle=document.getElementById('app-subtitle');
@@ -433,34 +446,67 @@ function currentTabId(){
   const active=document.querySelector('.tab.active');
   return active?active.id:'tab-home';
 }
-let swipeAnimTimer=null;
-function setSwipeAnimation(direction){
-  document.body.classList.remove('swipe-next','swipe-prev');
-  if(!direction)return;
-  void document.body.offsetWidth;
-  document.body.classList.add(direction>0?'swipe-next':'swipe-prev');
-  clearTimeout(swipeAnimTimer);
-  swipeAnimTimer=setTimeout(()=>document.body.classList.remove('swipe-next','swipe-prev'),280);
+function appScroller(){return document.querySelector('.wrap')||document.scrollingElement||document.documentElement;}
+function getAppScroll(){
+  const scroller=appScroller();
+  return scroller===document.documentElement||scroller===document.body?(window.pageYOffset||0):(scroller.scrollTop||0);
+}
+function setAppScroll(top){
+  const scroller=appScroller();
+  if(scroller&&scroller.scrollTo)scroller.scrollTo({top:top||0,behavior:'auto'});
+  else if(scroller)scroller.scrollTop=top||0;
+  else window.scrollTo(0,top||0);
+}
+function cleanTabAnimation(tab){
+  if(!tab)return;
+  tab.classList.remove('leaving','enter-next','enter-prev','leave-next','leave-prev');
+}
+function finishTabAnimation(oldTab,newTab){
+  if(oldTab&&oldTab!==newTab){oldTab.classList.remove('active');cleanTabAnimation(oldTab);}
+  cleanTabAnimation(newTab);
+}
+function animateTabChange(oldTab,newTab,direction){
+  clearTimeout(tabAnimTimer);
+  document.querySelectorAll('.tab.leaving').forEach(t=>finishTabAnimation(t,newTab));
+  cleanTabAnimation(newTab);
+  if(oldTab&&oldTab!==newTab&&direction){
+    cleanTabAnimation(oldTab);
+    oldTab.classList.add('leaving',direction>0?'leave-next':'leave-prev');
+  }else if(oldTab&&oldTab!==newTab){
+    oldTab.classList.remove('active');
+  }
+  newTab.classList.add('active');
+  if(direction)newTab.classList.add(direction>0?'enter-next':'enter-prev');
+  tabAnimTimer=setTimeout(()=>finishTabAnimation(oldTab,newTab),TAB_ANIM_MS+60);
 }
 function swipeToTab(direction){
   const index=TAB_ORDER.indexOf(currentTabId());
   if(index<0)return;
   const next=Math.min(Math.max(index+direction,0),TAB_ORDER.length-1);
   if(next===index)return;
-  setSwipeAnimation(direction);
-  goTab(TAB_ORDER[next]);
+  goTab(TAB_ORDER[next],null,{direction,preserveScroll:true});
 }
-function goTab(id,btn){
+function goTab(id,btn,opts={}){
   const tab=document.getElementById(id);
   if(!tab)return;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  tab.classList.add('active');
+  const oldTab=document.querySelector('.tab.active');
+  if(oldTab&&oldTab.id)tabScrollPositions[oldTab.id]=getAppScroll();
+  const oldIndex=oldTab?TAB_ORDER.indexOf(oldTab.id):-1;
+  const newIndex=TAB_ORDER.indexOf(id);
+  const direction=opts.direction||(oldIndex>=0&&newIndex>=0?Math.sign(newIndex-oldIndex):0);
   document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
   const activeBtn=btn||document.querySelector('.nav button[data-tab="'+id+'"]');
   if(activeBtn)activeBtn.classList.add('active');
+  if(oldTab===tab){
+    updateAppHeader(id);
+    if(id==='tab-diary'){renderCalendar();renderEntries();}
+    return;
+  }
+  document.querySelectorAll('.tab').forEach(t=>{if(t!==oldTab&&t!==tab){t.classList.remove('active');cleanTabAnimation(t);}});
+  animateTabChange(oldTab,tab,direction);
   updateAppHeader(id);
   if(id==='tab-diary'){renderCalendar();renderEntries();}
-  try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);}
+  if(!opts.preserveScroll){requestAnimationFrame(()=>setAppScroll(tabScrollPositions[id]||0));}
 }
 
 const CIRC=364.4;
