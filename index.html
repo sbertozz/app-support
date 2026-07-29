@@ -36,7 +36,7 @@ body{
     radial-gradient(circle at 18% -8%,rgba(255,143,189,.42),transparent 34%),
     radial-gradient(circle at 100% 6%,rgba(175,82,222,.18),transparent 30%),
     linear-gradient(180deg,var(--bg),#fff 54%,#fff7fb);
-  -webkit-tap-highlight-color:transparent;overscroll-behavior-y:none;touch-action:pan-y;
+  -webkit-tap-highlight-color:transparent;overscroll-behavior-y:none;touch-action:auto;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
 @media(prefers-color-scheme:dark){body{background:radial-gradient(circle at 18% -8%,rgba(255,90,138,.24),transparent 34%),radial-gradient(circle at 100% 6%,rgba(175,82,222,.18),transparent 30%),linear-gradient(180deg,var(--bg),#130d12 68%)}}
@@ -63,22 +63,28 @@ body::before{
 .app-subtitle{display:block;font-size:12px;line-height:1.25;color:var(--text3);font-weight:750;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px}
 .quick-help{border:0;border-radius:999px;padding:10px 13px;background:linear-gradient(135deg,var(--danger),var(--pink2));color:#fff;font-size:13px;font-weight:900;letter-spacing:.2px;box-shadow:0 10px 22px rgba(255,59,95,.22)}
 .quick-help:active{transform:scale(.96)}
-.wrap{max-width:430px;margin:0 auto;height:100vh;height:100dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:calc(86px + env(safe-area-inset-top)) 16px calc(100px + env(safe-area-inset-bottom));touch-action:pan-y;scrollbar-width:none}.wrap::-webkit-scrollbar{display:none}
+.wrap{max-width:430px;margin:0 auto;height:100vh;height:100dvh;overflow:hidden;padding:calc(86px + env(safe-area-inset-top)) 16px calc(100px + env(safe-area-inset-bottom));touch-action:pan-x pan-y}
 h1{font-size:32px;line-height:1.02;letter-spacing:-.8px;margin-bottom:10px}
 h2{font-size:24px;line-height:1.12;letter-spacing:-.35px;margin-bottom:12px}
 h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
 p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .hidden{display:none!important}
-.tabs-viewport{position:relative;overflow:hidden;isolation:isolate}
-.tab{display:none;transform:translate3d(0,0,0);backface-visibility:hidden;-webkit-backface-visibility:hidden;will-change:transform,opacity}
-.tab.active{display:block;position:relative;z-index:1}
-.tab.drag-panel{display:block;will-change:transform,opacity}
-.tab.drag-neighbor{position:absolute;top:0;left:0;right:0;width:100%;z-index:2;pointer-events:none}
-.tab.is-animating{transition:transform .36s cubic-bezier(.22,1,.36,1),opacity .36s cubic-bezier(.22,1,.36,1)}
-body.is-swiping{cursor:grabbing}
-body.is-swiping .wrap{overflow-y:hidden}
-body.is-swiping .tab{user-select:none;-webkit-user-select:none}
-@media(prefers-reduced-motion:reduce){.tab.is-animating{transition:none}}
+.tabs-viewport{
+  position:relative;display:flex;width:100%;height:100%;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;scroll-snap-stop:always;scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none;
+  touch-action:pan-x pan-y;isolation:isolate;
+}
+.tabs-viewport::-webkit-scrollbar{display:none}
+.tab{
+  display:block;flex:0 0 100%;min-width:100%;height:100%;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-align:start;scroll-snap-stop:always;
+  transform:translate3d(0,0,0);backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  contain:layout paint style;padding:0 1px 18px;overscroll-behavior-y:contain;
+}
+.tab::-webkit-scrollbar{display:none}
+.tab.active{display:block}
+@media(prefers-reduced-motion:reduce){.tabs-viewport{scroll-behavior:auto}}
 
 .nav{
   position:fixed;bottom:0;left:50%;right:auto;transform:translateX(-50%);width:min(100%,430px);display:flex;justify-content:center;gap:4px;
@@ -97,7 +103,7 @@ body.is-swiping .tab{user-select:none;-webkit-user-select:none}
 .card,.quote-box,.contact-big{
   border:1px solid var(--border);border-radius:24px;padding:18px;margin-bottom:14px;
   background:var(--surface);box-shadow:var(--soft-shadow);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  transform:translateZ(0);
 }
 .card-flat{border:none;padding:0;margin-bottom:18px}
 
@@ -429,135 +435,93 @@ const TAB_META={
   'tab-help':['Aiuto','Mario · 338 218 8083']
 };
 const TAB_ORDER=['tab-home','tab-stop','tab-diary','tab-help'];
-const TAB_ANIM_MS=360;
 const tabScrollPositions={};
-let tabAnimTimer=null;
-let isTabAnimating=false;
+let activeTabId='tab-home';
+let pagerScrollTimer=null;
+let pagerTicking=false;
 function raf(fn){(window.requestAnimationFrame||function(cb){return setTimeout(cb,16);})(fn);}
+function pager(){return document.getElementById('tabs-viewport');}
+function tabWidth(){
+  const vp=pager();
+  return (vp&&vp.clientWidth)||Math.min(window.innerWidth||390,430);
+}
 function updateAppHeader(id){
   const meta=TAB_META[id]||TAB_META['tab-home'];
   const title=document.getElementById('app-title'),subtitle=document.getElementById('app-subtitle');
   if(title)title.textContent=meta[0];
   if(subtitle)subtitle.textContent=meta[1];
 }
-function currentTabId(){
-  const active=document.querySelector('.tab.active');
-  return active?active.id:'tab-home';
-}
-function tabWidth(){
-  const viewport=document.getElementById('tabs-viewport')||document.querySelector('.wrap');
-  return (viewport&&viewport.clientWidth)||Math.min(window.innerWidth||390,430);
-}
-function appScroller(){return document.querySelector('.wrap')||document.scrollingElement||document.documentElement;}
-function getAppScroll(){
-  const scroller=appScroller();
-  return scroller===document.documentElement||scroller===document.body?(window.pageYOffset||0):(scroller.scrollTop||0);
-}
-function setAppScroll(top){
-  const scroller=appScroller();
-  if(scroller&&scroller.scrollTo)scroller.scrollTo({top:top||0,behavior:'auto'});
-  else if(scroller)scroller.scrollTop=top||0;
-  else window.scrollTo(0,top||0);
-}
+function currentTabId(){return activeTabId||'tab-home';}
 function setActiveNav(id,btn){
   document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
   const activeBtn=btn||document.querySelector('.nav button[data-tab="'+id+'"]');
   if(activeBtn)activeBtn.classList.add('active');
 }
-function afterTabSelected(id){
+function rememberTabScroll(id){
+  const tab=document.getElementById(id);
+  if(tab)tabScrollPositions[id]=tab.scrollTop||0;
+}
+function restoreTabScroll(id){
+  const tab=document.getElementById(id);
+  if(tab&&tabScrollPositions[id]!=null)raf(()=>{tab.scrollTop=tabScrollPositions[id]||0;});
+}
+function afterTabSelected(id,light=false){
   updateAppHeader(id);
-  if(id==='tab-diary'){renderCalendar();renderEntries();}
+  if(id==='tab-diary'&&!light){renderCalendar();renderEntries();}
 }
-function cleanTab(tab){
-  if(!tab)return;
-  tab.classList.remove('drag-panel','drag-neighbor','is-animating');
-  tab.style.transform='';
-  tab.style.opacity='';
-  tab.style.zIndex='';
-  tab.style.transition='';
-}
-function cleanAllTabsExcept(keep){
-  document.querySelectorAll('.tab').forEach(t=>{
-    if(t!==keep)t.classList.remove('active');
-    cleanTab(t);
-  });
-}
-function setPanel(tab,x,opacity){
-  if(!tab)return;
-  tab.style.transform='translate3d('+Math.round(x)+'px,0,0)';
-  tab.style.opacity=opacity==null?'':String(opacity);
-}
-function prepPanel(tab,neighbor){
-  if(!tab)return;
-  tab.classList.add('drag-panel');
-  if(neighbor)tab.classList.add('drag-neighbor');
-  else tab.classList.remove('drag-neighbor');
-  tab.classList.remove('is-animating');
-  tab.style.transition='none';
-  tab.style.zIndex=neighbor?'2':'1';
-}
-function animatePanels(tabs,done){
-  clearTimeout(tabAnimTimer);
-  tabs.forEach(tab=>{
-    if(!tab)return;
-    tab.style.transition='';
-    tab.classList.add('is-animating');
-  });
-  tabAnimTimer=setTimeout(()=>{tabs.forEach(cleanTab);if(done)done();},TAB_ANIM_MS+80);
-}
-function prefersReducedMotion(){
-  return !!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-}
-function completeInstant(oldTab,newTab,id,btn){
-  clearTimeout(tabAnimTimer);
-  cleanAllTabsExcept(newTab);
-  if(oldTab&&oldTab!==newTab)oldTab.classList.remove('active');
-  newTab.classList.add('active');
+function setActiveTab(id,btn,opts={}){
+  if(!TAB_ORDER.includes(id))return;
+  if(activeTabId&&activeTabId!==id)rememberTabScroll(activeTabId);
+  activeTabId=id;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.id===id));
   setActiveNav(id,btn);
-  afterTabSelected(id);
-  setAppScroll(tabScrollPositions[id]||0);
+  afterTabSelected(id,!!opts.light);
+}
+function goTab(id,btn,opts={}){
+  if(!TAB_ORDER.includes(id))return;
+  setActiveTab(id,btn,{light:true});
+  const vp=pager();
+  if(vp){
+    const left=TAB_ORDER.indexOf(id)*tabWidth();
+    vp.scrollTo({left,behavior:opts.immediate?'auto':'smooth'});
+  }
+  restoreTabScroll(id);
 }
 function swipeToTab(direction){
   const index=TAB_ORDER.indexOf(currentTabId());
   if(index<0)return;
   const next=Math.min(Math.max(index+direction,0),TAB_ORDER.length-1);
   if(next===index)return;
-  goTab(TAB_ORDER[next],null,{direction});
+  goTab(TAB_ORDER[next]);
 }
-function goTab(id,btn,opts={}){
-  const newTab=document.getElementById(id);
-  if(!newTab)return;
-  const oldTab=document.querySelector('.tab.active');
-  if(oldTab&&oldTab.id)tabScrollPositions[oldTab.id]=getAppScroll();
-  if(oldTab===newTab){setActiveNav(id,btn);afterTabSelected(id);return;}
-  const oldIndex=oldTab?TAB_ORDER.indexOf(oldTab.id):-1;
-  const newIndex=TAB_ORDER.indexOf(id);
-  const direction=opts.direction||(oldIndex>=0&&newIndex>=0?Math.sign(newIndex-oldIndex):0)||1;
-  setActiveNav(id,btn);
-  afterTabSelected(id);
-  if(prefersReducedMotion()||!oldTab){completeInstant(oldTab,newTab,id,btn);return;}
-
-  isTabAnimating=true;
-  document.body.classList.add('is-swiping');
-  document.querySelectorAll('.tab').forEach(t=>{if(t!==oldTab&&t!==newTab){t.classList.remove('active');cleanTab(t);}});
+function syncTabFromPager(final=false){
+  const vp=pager();
   const w=tabWidth();
-  prepPanel(oldTab,false);
-  prepPanel(newTab,true);
-  setPanel(oldTab,0,1);
-  setPanel(newTab,direction*w,.86);
-  void newTab.offsetWidth;
-  animatePanels([oldTab,newTab],()=>{
-    oldTab.classList.remove('active');
-    newTab.classList.add('active');
-    cleanTab(oldTab);cleanTab(newTab);
-    document.body.classList.remove('is-swiping');
-    isTabAnimating=false;
-    setAppScroll(tabScrollPositions[id]||0);
-  });
-  raf(()=>{
-    setPanel(oldTab,-direction*w,.42);
-    setPanel(newTab,0,1);
-  });
+  if(!vp||!w)return;
+  const index=Math.max(0,Math.min(TAB_ORDER.length-1,Math.round(vp.scrollLeft/w)));
+  const id=TAB_ORDER[index];
+  if(id&&id!==activeTabId)setActiveTab(id,null,{light:!final});
+  else if(final&&id)afterTabSelected(id,false);
+}
+function setupSwipeNavigation(){
+  const vp=pager();
+  if(!vp)return;
+  vp.scrollLeft=TAB_ORDER.indexOf(activeTabId)*tabWidth();
+  vp.addEventListener('scroll',()=>{
+    if(!pagerTicking){
+      pagerTicking=true;
+      raf(()=>{pagerTicking=false;syncTabFromPager(false);});
+    }
+    clearTimeout(pagerScrollTimer);
+    pagerScrollTimer=setTimeout(()=>syncTabFromPager(true),160);
+  },{passive:true});
+  window.addEventListener('resize',()=>{
+    clearTimeout(pagerScrollTimer);
+    pagerScrollTimer=setTimeout(()=>{
+      const idx=Math.max(0,TAB_ORDER.indexOf(activeTabId));
+      vp.scrollTo({left:idx*tabWidth(),behavior:'auto'});
+    },120);
+  },{passive:true});
 }
 
 const CIRC=364.4;
@@ -733,130 +697,6 @@ function renderEntries(){
   }).join('')+'</div>';
 }
 
-
-function setupSwipeNavigation(){
-  const area=document.querySelector('.wrap')||document;
-  let state=null,blockNextClick=false;
-  function isIgnoredTarget(target){
-    return !!(target&&target.closest&&target.closest('.nav,.app-header,.contact-actions,input,textarea,select'));
-  }
-  function start(x,y,id,target,sourceEvent){
-    if(isTabAnimating||isIgnoredTarget(target))return;
-    state={sx:x,sy:y,x,y,lastX:x,lastTime:Date.now(),startTime:Date.now(),id,locked:false,vertical:false,oldTab:null,newTab:null,direction:0,width:tabWidth(),dx:0,velocity:0};
-    if(sourceEvent&&sourceEvent.currentTarget&&sourceEvent.currentTarget.setPointerCapture&&id!==null){
-      try{sourceEvent.currentTarget.setPointerCapture(id);}catch(e){}
-    }
-  }
-  function ensureDrag(direction){
-    if(!state||state.direction===direction)return;
-    if(state.newTab)cleanTab(state.newTab);
-    state.direction=direction;
-    const active=document.querySelector('.tab.active');
-    const index=active?TAB_ORDER.indexOf(active.id):-1;
-    const nextIndex=index+direction;
-    state.oldTab=active;
-    state.newTab=nextIndex>=0&&nextIndex<TAB_ORDER.length?document.getElementById(TAB_ORDER[nextIndex]):null;
-    if(state.oldTab)prepPanel(state.oldTab,false);
-    if(state.newTab){
-      if(state.newTab.id==='tab-diary'){renderCalendar();renderEntries();}
-      prepPanel(state.newTab,true);
-      setPanel(state.newTab,direction*state.width,.82);
-    }
-  }
-  function move(x,y,id,event){
-    if(!state)return;
-    if(state.id!==null&&id!==null&&id!==state.id)return;
-    const now=Date.now();
-    const dx=x-state.sx,dy=y-state.sy;
-    if(!state.locked&&!state.vertical){
-      if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)*1.12){state.vertical=true;return;}
-      if(Math.abs(dx)>12&&Math.abs(dx)>Math.abs(dy)*1.08){
-        state.locked=true;
-        document.body.classList.add('is-swiping');
-      }else{return;}
-    }
-    if(!state.locked)return;
-    if(event&&event.cancelable)event.preventDefault();
-    const direction=dx<0?1:-1;
-    ensureDrag(direction);
-    state.dx=Math.max(-state.width,Math.min(state.width,dx));
-    state.velocity=(x-state.lastX)/Math.max(1,now-state.lastTime);
-    state.lastX=x;state.lastTime=now;
-    if(!state.oldTab)return;
-    if(!state.newTab){
-      setPanel(state.oldTab,state.dx*.18,1);
-      return;
-    }
-    const progress=Math.min(1,Math.abs(state.dx)/state.width);
-    setPanel(state.oldTab,state.dx,1-progress*.20);
-    setPanel(state.newTab,direction*state.width+state.dx,.82+progress*.18);
-  }
-  function end(x,y,id,event){
-    if(!state)return;
-    if(state.id!==null&&id!==null&&id!==state.id)return;
-    if(!state.locked){state=null;return;}
-    if(event&&event.cancelable)event.preventDefault();
-    const s=state;state=null;blockNextClick=true;
-    const direction=s.direction||((x-s.sx)<0?1:-1);
-    const absDx=Math.abs(s.dx);
-    const commit=!!s.newTab&&(absDx>s.width*.24||Math.abs(s.velocity)>.55);
-    const oldTab=s.oldTab,newTab=s.newTab,w=s.width;
-    if(!oldTab){document.body.classList.remove('is-swiping');return;}
-    oldTab.style.transition='';oldTab.classList.add('is-animating');
-    if(newTab){newTab.style.transition='';newTab.classList.add('is-animating');}
-    if(commit){
-      const newId=newTab.id;
-      tabScrollPositions[oldTab.id]=getAppScroll();
-      setActiveNav(newId);
-      afterTabSelected(newId);
-      raf(()=>{
-        setPanel(oldTab,-direction*w,.38);
-        setPanel(newTab,0,1);
-      });
-      clearTimeout(tabAnimTimer);
-      tabAnimTimer=setTimeout(()=>{
-        oldTab.classList.remove('active');
-        newTab.classList.add('active');
-        cleanTab(oldTab);cleanTab(newTab);
-        document.body.classList.remove('is-swiping');
-        setAppScroll(tabScrollPositions[newId]||getAppScroll());
-      },TAB_ANIM_MS+70);
-    }else{
-      raf(()=>{
-        setPanel(oldTab,0,1);
-        if(newTab)setPanel(newTab,direction*w,.82);
-      });
-      clearTimeout(tabAnimTimer);
-      tabAnimTimer=setTimeout(()=>{
-        cleanTab(oldTab);if(newTab)cleanTab(newTab);
-        document.body.classList.remove('is-swiping');
-      },TAB_ANIM_MS+70);
-    }
-  }
-  function cancel(){
-    if(!state)return;
-    const s=state;state=null;
-    if(s.oldTab){cleanTab(s.oldTab);setPanel(s.oldTab,0,1);}
-    if(s.newTab)cleanTab(s.newTab);
-    document.body.classList.remove('is-swiping');
-  }
-  document.addEventListener('click',e=>{
-    if(!blockNextClick)return;
-    blockNextClick=false;
-    e.preventDefault();e.stopPropagation();
-  },true);
-  if(window.PointerEvent){
-    area.addEventListener('pointerdown',e=>{if(e.button&&e.button!==0)return;start(e.clientX,e.clientY,e.pointerId,e.target,e);},{passive:true});
-    area.addEventListener('pointermove',e=>move(e.clientX,e.clientY,e.pointerId,e),{passive:false});
-    area.addEventListener('pointerup',e=>end(e.clientX,e.clientY,e.pointerId,e),{passive:false});
-    area.addEventListener('pointercancel',cancel,{passive:true});
-  }else{
-    area.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;const t=e.touches[0];start(t.clientX,t.clientY,null,e.target,e);},{passive:true});
-    area.addEventListener('touchmove',e=>{if(!e.touches.length)return;const t=e.touches[0];move(t.clientX,t.clientY,null,e);},{passive:false});
-    area.addEventListener('touchend',e=>{if(!e.changedTouches.length)return;const t=e.changedTouches[0];end(t.clientX,t.clientY,null,e);},{passive:false});
-    area.addEventListener('touchcancel',cancel,{passive:true});
-  }
-}
 
 loadData();updateStats();renderCalendar();renderEntries();newQuote();updateAppHeader('tab-home');setupSwipeNavigation();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
