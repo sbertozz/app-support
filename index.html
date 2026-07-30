@@ -193,15 +193,15 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .breath-tabs button.active{background:var(--surface-solid);color:var(--pink);box-shadow:0 5px 12px rgba(255,90,138,.10)}
 .breath-desc{font-size:13px!important;line-height:1.38!important;color:var(--text3)!important;margin-bottom:10px!important;font-weight:750}
 .breath-stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:286px;padding:8px 0 0}
-.breath-orb-wrap{height:176px;display:flex;align-items:center;justify-content:center;width:100%;position:relative}
-.breath-orb-wrap::before{content:"";position:absolute;width:172px;height:172px;border-radius:50%;background:radial-gradient(circle,rgba(255,90,138,.12),transparent 68%);filter:blur(.2px)}
-.breath-orb{--breath-scale:1;--breath-duration:4s;width:118px;height:118px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;z-index:1;transform:scale(var(--breath-scale));transition:transform var(--breath-duration) cubic-bezier(.22,1,.36,1),background .45s ease,border-color .45s ease,box-shadow .45s ease;border:3px solid rgba(255,90,138,.34);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(255,240,246,.82));box-shadow:inset 0 1px 10px rgba(255,255,255,.86),0 18px 38px rgba(255,90,138,.15)}
+.breath-orb-wrap{height:198px;display:flex;align-items:center;justify-content:center;width:100%;position:relative}
+.breath-orb-wrap::before{content:"";position:absolute;width:194px;height:194px;border-radius:50%;background:radial-gradient(circle,rgba(255,90,138,.12),transparent 68%);filter:blur(.2px)}
+.breath-orb{--breath-scale:1;--breath-duration:4s;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;z-index:1;transform:scale(var(--breath-scale));transition:transform var(--breath-duration) cubic-bezier(.22,1,.36,1),background .45s ease,border-color .45s ease,box-shadow .45s ease;border:3px solid rgba(255,90,138,.34);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(255,240,246,.82));box-shadow:inset 0 1px 10px rgba(255,255,255,.86),0 18px 38px rgba(255,90,138,.15)}
 .breath-orb.inhale{border-color:rgba(52,199,89,.55);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(220,255,232,.88));box-shadow:0 20px 42px rgba(52,199,89,.18)}
 .breath-orb.hold{border-color:rgba(90,200,250,.58);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(225,245,255,.88));box-shadow:0 20px 42px rgba(90,200,250,.16)}
 .breath-orb.exhale{border-color:rgba(255,143,189,.48);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(255,232,243,.88));box-shadow:0 14px 30px rgba(255,90,138,.12)}
-.breath-orb-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px}
-.breath-phase{font-size:13px;font-weight:950;color:var(--text);line-height:1.12}
-.breath-count{font-size:34px;font-weight:950;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-1px;color:var(--pink)}
+.breath-orb-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:16px;max-width:118px}
+.breath-phase{font-size:15px;font-weight:950;color:var(--text);line-height:1.08;letter-spacing:-.15px;max-width:112px;white-space:normal}
+.breath-count{font-size:46px;font-weight:950;line-height:.95;font-variant-numeric:tabular-nums;letter-spacing:-1.4px;color:var(--pink);text-shadow:0 1px 0 rgba(255,255,255,.65)}
 .breath-progress{width:100%;height:9px;border-radius:999px;background:rgba(255,90,138,.10);overflow:hidden;margin:12px 0 8px}
 .breath-progress-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#5ac8fa,#34c759,#ff8fbd);transition:width .32s linear}
 .breath-meta{width:100%;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:850;color:var(--text3);margin-bottom:12px}
@@ -428,11 +428,10 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
   <div class="card breath-card">
     <h3>Respiro guidato</h3>
     <div class="breath-tabs">
-      <button class="active" onclick="setBreathType('calm',this)">Calma</button>
-      <button onclick="setBreathType('square',this)">Quadrato</button>
+      <button class="active" onclick="setBreathType('square',this)">Quadrato</button>
       <button onclick="setBreathType('478',this)">4-7-8</button>
     </div>
-    <p class="breath-desc" id="breath-desc">Inspira 4, espira 6. È il più semplice quando l'urgenza è alta.</p>
+    <p class="breath-desc" id="breath-desc">4 lati: inspira, trattieni, espira, trattieni. Utile quando la mente corre.</p>
     <div class="breath-stage">
       <div class="breath-orb-wrap">
         <div class="breath-orb exhale" id="breath-circle">
@@ -1055,16 +1054,6 @@ function toggleTimer(){
 function resetTimer(){clearInterval(ti);tr=false;ts=600;document.getElementById('timer-text').textContent='10:00';updateCircle();document.getElementById('timer-done').classList.add('hidden');const b=document.getElementById('timer-btn');b.textContent='Inizia';b.disabled=false;b.classList.add('primary');}
 
 const BREATH_PATTERNS={
-  calm:{
-    name:'Calma',
-    desc:"Inspira 4, espira 6. È il più semplice quando l'urgenza è alta.",
-    tip:'Espira più a lungo di quanto inspiri: stai dicendo al corpo che non c’è pericolo immediato.',
-    goal:6,
-    phases:[
-      {key:'inhale',label:'Inspira',seconds:4,scale:1.34},
-      {key:'exhale',label:'Espira lento',seconds:6,scale:.88}
-    ]
-  },
   square:{
     name:'Quadrato',
     desc:'4 lati: inspira, trattieni, espira, trattieni. Utile quando la mente corre.',
@@ -1089,8 +1078,8 @@ const BREATH_PATTERNS={
     ]
   }
 };
-let breathType='calm',breathTimer=null,breathRunning=false,breathCompleted=false,breathPhaseIndex=0,breathRemaining=0,breathPhaseTotal=0,breathCycle=1;
-function breathPattern(){return BREATH_PATTERNS[breathType]||BREATH_PATTERNS.calm;}
+let breathType='square',breathTimer=null,breathRunning=false,breathCompleted=false,breathPhaseIndex=0,breathRemaining=0,breathPhaseTotal=0,breathCycle=1;
+function breathPattern(){return BREATH_PATTERNS[breathType]||BREATH_PATTERNS.square;}
 function breathEls(){return {
   orb:document.getElementById('breath-circle'),
   phase:document.getElementById('breath-phase'),
