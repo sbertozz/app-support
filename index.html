@@ -117,6 +117,10 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .section-head{margin:6px 0 16px}
 .eyebrow{font-size:13px;line-height:1;text-transform:uppercase;letter-spacing:.8px;font-weight:800;color:var(--pink);margin-bottom:8px}
 .section-title{font-size:22px;font-weight:800;letter-spacing:-.35px;margin-bottom:14px;color:var(--text)}
+#tab-progress .section-head{padding:20px 18px 18px;border-radius:26px;background:linear-gradient(145deg,#ffffff,#ffe4f0);border:1px solid rgba(255,90,138,.24);box-shadow:0 16px 36px rgba(255,90,138,.16);margin:0 0 14px}
+#tab-progress .section-head h2{font-size:30px;line-height:1.02;color:#120b12;font-weight:950;letter-spacing:-.75px;text-shadow:0 1px 0 #fff;margin:0;max-width:330px}
+#tab-progress .section-head .eyebrow{display:inline-flex;background:rgba(255,90,138,.12);padding:7px 10px;border-radius:999px;color:#d4145a;margin-bottom:10px}
+@media(prefers-color-scheme:dark){#tab-progress .section-head{background:linear-gradient(145deg,rgba(43,27,38,.96),rgba(70,38,56,.88));border-color:rgba(255,143,189,.20)}#tab-progress .section-head h2{color:#fff7fb;text-shadow:none}}
 .card,.quote-box,.contact-big{
   border:1px solid var(--border);border-radius:24px;padding:18px;margin-bottom:14px;
   background:var(--surface);box-shadow:var(--soft-shadow);
@@ -283,7 +287,7 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .forest-crown-mini{position:absolute;left:50%;bottom:12px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#d7ffd7,#43ce68 63%,#159447);transform:translateX(-50%);box-shadow:0 8px 16px rgba(22,163,74,.18)}
 .forest-flower{position:absolute;font-size:13px;transform:translateX(-50%);filter:drop-shadow(0 4px 6px rgba(255,90,138,.18));animation:forestPop .55s cubic-bezier(.22,1,.36,1) both}
 @keyframes forestPop{from{opacity:0;transform:translateX(-50%) scale(.55)}to{opacity:1;transform:translateX(-50%) scale(var(--s,1))}}
-.progress-hero{position:relative;overflow:hidden;background:linear-gradient(155deg,rgba(255,255,255,.92),rgba(255,240,247,.76))}
+.progress-hero{position:relative;overflow:hidden;background:linear-gradient(155deg,rgba(255,255,255,.97),rgba(255,234,244,.90));border-color:rgba(255,90,138,.20)}
 .progress-hero::after{content:"";position:absolute;right:-70px;top:-80px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,rgba(52,199,89,.18),transparent 67%);pointer-events:none}
 .progress-top{position:relative;display:grid;grid-template-columns:132px 1fr;gap:14px;align-items:center}
 .progress-ring{position:relative;width:132px;height:132px;display:flex;align-items:center;justify-content:center}
@@ -294,7 +298,7 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .progress-ring-center{text-align:center;position:relative;z-index:1}
 .progress-ring-center strong{display:block;font-size:31px;font-weight:950;letter-spacing:-.8px;color:var(--text)}
 .progress-ring-center span{display:block;font-size:10px;font-weight:900;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
-.progress-copy h3{font-size:18px;margin-bottom:5px}.progress-copy p{font-size:13px;line-height:1.36;margin:0;color:var(--text2);font-weight:700}
+.progress-copy h3{font-size:20px;margin-bottom:7px;color:#120b12;font-weight:950;letter-spacing:-.35px}.progress-copy p{font-size:14px;line-height:1.45;margin:0;color:#3c3039;font-weight:850}@media(prefers-color-scheme:dark){.progress-copy h3{color:#fff7fb}.progress-copy p{color:#eadce7}}
 .progress-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:15px}
 .progress-metric{border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.55);padding:10px 6px;text-align:center}
 .progress-metric strong{display:block;font-size:22px;font-weight:950;letter-spacing:-.45px;color:var(--text)}
@@ -354,7 +358,7 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 <div class="tab active" id="tab-home">
   <div class="home-hero">
     <p class="eyebrow">Supporto rapido</p>
-    <h1>Sofia, resta qui, adesso.</h1>
+    <h1>amoremio, resta qui, adesso.</h1>
     <p>Questo posto è per te. Se l'impulso è forte, entra subito nella modalità emergenza.</p>
     <button class="sos-big" onclick="goTab('tab-stop')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>
@@ -363,7 +367,7 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
     <p class="sos-sub">Ti porta direttamente nel tab Ferma.</p>
   </div>
   <button class="quote-box quote-button" type="button" onclick="newQuote()" aria-label="Nuova frase di supporto">
-    <div class="quote-text" id="quote-text">"Sofia, resta qui con me un minuto. Ti amo."</div>
+    <div class="quote-text" id="quote-text">"amoremio, resta qui con me un minuto. Ti amo."</div>
     <div class="quote-hint">Tocca la frase per cambiarla</div>
   </button>
 
@@ -406,8 +410,6 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
     <p class="eyebrow">Emergenza</p>
     <h2>Ferma l'impulso</h2>
   </div>
-  <button class="win-btn" onclick="markWin()">✓ Ce l'ho fatta — ho resistito</button>
-
   <div class="card">
     <p style="font-size:14px;color:var(--text2);text-align:center;margin-bottom:4px">Resisti 10 minuti. L'urgenza passerà.</p>
     <div class="timer-wrap">
@@ -869,36 +871,122 @@ const quotes=[
   "Se non sai qual è la scelta giusta, scegli quella che ti lascia più al sicuro tra dieci minuti."
 ];
 const loveQuotes=[
-  "Sofia, resta qui con me un minuto. Ti amo.",
-  "Ti amo, Sofia. Facciamo passare questa onda insieme.",
-  "Sofia, non devi vincere da sola.",
-  "Amore, per me conti tu. Adesso scegliamo la cosa sicura.",
-  "Sofia, un minuto alla volta. Io sono qui.",
-  "Ti amo anche in questo momento difficile.",
-  "Sofia, non sei pesante. Sei importante.",
-  "Resta qui con me ancora dieci minuti, amore.",
-  "Sofia, respira piano. Io sono dalla tua parte.",
-  "Ti amo, Sofia. Prima sicurezza, poi tutto il resto.",
-  "Sofia, non devi essere perfetta per essere amata.",
-  "Amore mio, se oggi pesa tutto, appoggiati qui un secondo.",
-  "Sofia, io voglio te presente e al sicuro.",
-  "Ti amo. Non devi nasconderti da me.",
-  "Sofia, sei molto più grande di questo momento.",
-  "Ti amo Sofia, davvero.",
-  "Sofia, scegli la cosa che ti protegge. Io tifo per te.",
-  "Non sei sola, Sofia. Sono qui con te.",
-  "Sofia, sei la mia persona anche nei giorni difficili.",
-  "Ti amo. Restiamo nel prossimo minuto, non in tutta la giornata.",
-  "Sofia, sono fiero di ogni volta che ci provi.",
-  "Amore, anche questa passerà. Tu resta.",
-  "Sofia, se non hai forza usa la mia voce per un minuto.",
-  "Ti amo nei giorni facili e in quelli complicati.",
-  "Sofia, la tua vita vale più di questa urgenza.",
-  "Amore, non devi meritarti aiuto. Lo puoi usare adesso.",
-  "Sofia, apri una chat prima di restare sola con l'impulso.",
-  "Ti amo, Sofia. Non decidere nel picco.",
-  "Sofia, mi basta che tu faccia il prossimo passo, non tutti.",
-  "Amore, resta visibile. Non chiuderti proprio adesso."
+  "amoremio, resta qui con me un minuto. Ti amo.",
+  "topa, non devi fare tutto adesso. Solo il prossimo passo.",
+  "topina, respira piano. Io sono qui.",
+  "tata, ti amo. Non decidere nel picco.",
+  "amoremio, scegli la cosa che ti protegge.",
+  "topa, per me conti tu. Adesso stai al sicuro.",
+  "topina, un minuto alla volta. Davvero.",
+  "tata, non sei sola. Sono con te.",
+  "amoremio, se oggi pesa tutto, appoggiati qui un secondo.",
+  "topa, mi basta che resti qui ancora un po'.",
+  "topina, sei importante anche quando fai fatica.",
+  "tata, ti amo nei giorni facili e in quelli storti.",
+  "amoremio, non devi essere perfetta per essere amata.",
+  "topa, facciamo passare questa onda insieme.",
+  "topina, sono fiero di ogni volta che ci provi.",
+  "tata, resta visibile. Non chiuderti proprio adesso.",
+  "amoremio, la tua sicurezza viene prima di tutto.",
+  "topa, tu vali più di questa urgenza.",
+  "topina, se non hai forza usa la mia voce per un minuto.",
+  "tata, non devi vincere da sola.",
+  "amoremio, oggi basta proteggere un momento.",
+  "topa, rallenta. Non serve decidere subito.",
+  "topina, ti tengo stretta anche da qui.",
+  "tata, fai la cosa più sicura, poi il resto si vede.",
+  "amoremio, ti amo più del rumore che senti adesso.",
+  "topa, resta con me nel prossimo minuto.",
+  "topina, apri una chat prima di restare sola con l'impulso.",
+  "tata, non c'è niente da dimostrare. Solo da proteggerti.",
+  "amoremio, anche questa passa. Tu resta.",
+  "topa, io voglio te presente e al sicuro.",
+  "topina, sei la mia persona anche nei momenti difficili.",
+  "tata, se tremi non sei sbagliata. Sei solo in allarme.",
+  "amoremio, fai una cosa piccola e sicura.",
+  "topa, non devi spiegarmi tutto. Mi basta sapere che ci sei.",
+  "topina, prendi tempo. Il tempo ti aiuta.",
+  "tata, ti amo. Prima respira, poi scegli.",
+  "amoremio, non lasciare che un minuto difficile decida per te.",
+  "topa, se ti sembra troppo, riducilo a dieci secondi.",
+  "topina, io tifo per te anche quando tu non ci riesci.",
+  "tata, resta qui. Ti amo davvero.",
+  "amoremio, non devi meritarti calma. Puoi prenderne un pezzetto adesso.",
+  "topa, alzati e cambia stanza se serve. Io sono con te.",
+  "topina, una scelta sicura adesso vale tantissimo.",
+  "tata, non sei pesante. Sei amata.",
+  "amoremio, lasciamo passare l'onda senza seguirla.",
+  "topa, ti amo. Non sei sola in questa cosa.",
+  "topina, la parte che vuole stare meglio è ancora qui.",
+  "tata, io vedo quanto stai provando.",
+  "amoremio, proteggiti come io vorrei proteggerti.",
+  "topa, resta con me fino al prossimo respiro.",
+  "topina, non serve farla perfetta. Serve farla sicura.",
+  "tata, scegli te stessa per un altro minuto.",
+  "amoremio, sei più grande di questo momento.",
+  "topa, se non sai cosa fare, premi Ferma e resta qui.",
+  "topina, ti amo anche quando non ti senti forte.",
+  "tata, non correre dietro all'urgenza. Rallentiamo insieme.",
+  "amoremio, io sono dalla tua parte.",
+  "topa, adesso non devi risolvere la vita. Devi solo restare al sicuro.",
+  "topina, ogni volta che resisti torna un pezzetto di libertà.",
+  "tata, ti amo. Davvero, proprio adesso.",
+  "amoremio, ti amo. Resta qui ancora un attimo.",
+  "topa, sono qui. Non devi fare questa cosa da sola.",
+  "topina, facciamo piano. Un respiro e poi un altro.",
+  "tata, sei al sicuro mentre leggi questa frase.",
+  "amoremio, se tutto corre, noi rallentiamo.",
+  "topa, scegli il gesto che ti lascia più serena dopo.",
+  "topina, non devi spiegare niente adesso. Solo restare.",
+  "tata, io ti tengo il posto qui, al sicuro.",
+  "amoremio, ti amo anche quando la giornata è storta.",
+  "topa, la cosa più piccola fatta bene basta per ora.",
+  "topina, non seguire la fretta. Segui il respiro.",
+  "tata, resta con me fino alla fine del timer.",
+  "amoremio, adesso vince chi aspetta un minuto in più.",
+  "topa, non sei in ritardo. Puoi ancora scegliere piano.",
+  "topina, se ti senti fragile, non sei sbagliata.",
+  "tata, ti amo. Fai solo la prossima cosa sicura.",
+  "amoremio, non serve forza enorme. Basta non restare sola.",
+  "topa, spezza il pilota automatico: luce, acqua, telefono.",
+  "topina, se puoi leggere questo, puoi aspettare dieci secondi.",
+  "tata, sono con te nel momento brutto, non solo dopo.",
+  "amoremio, non devi punirti per stare male.",
+  "topa, questa urgenza non merita il volante.",
+  "topina, il tuo corpo merita gentilezza anche adesso.",
+  "tata, se vuoi mollare, prima scrivi a qualcuno.",
+  "amoremio, sei importante mentre l'onda sale e mentre scende.",
+  "topa, un passo lontano dal rischio è già un passo verso di te.",
+  "topina, ti amo. Non devi risolvere tutto stanotte.",
+  "tata, siediti dove sei più al sicuro e respira.",
+  "amoremio, lascia passare l'impulso senza inseguirlo.",
+  "topa, la scelta sicura è abbastanza, anche se non sembra perfetta.",
+  "topina, io credo alla parte di te che vuole restare.",
+  "tata, non devi fare la forte. Devi solo proteggerti.",
+  "amoremio, se non riesci a volerti bene, fidati di me un minuto.",
+  "topa, resta qui: acqua, respiro, messaggio, tempo.",
+  "topina, ogni volta che rimandi, ti riprendi spazio.",
+  "tata, il picco non decide per te.",
+  "amoremio, ti amo. Aspetta prima di scegliere.",
+  "topa, se la testa urla, tu fai piano.",
+  "topina, anche oggi puoi salvare un pezzetto di te.",
+  "tata, non chiudere la porta proprio ora.",
+  "amoremio, tu conti più della fretta del momento.",
+  "topa, facciamo una cosa concreta: respira e cambia stanza.",
+  "topina, non devi essere lucida per fare una cosa sicura.",
+  "tata, resta visibile, resta raggiungibile, resta qui.",
+  "amoremio, ti amo più forte di questa giornata.",
+  "topa, non trasformare un pensiero in una decisione.",
+  "topina, se serve ricomincia da capo. Va bene così.",
+  "tata, io sono dalla tua parte sempre.",
+  "amoremio, puoi proteggerti anche se non ci credi ancora.",
+  "topa, prendi tempo. Il tempo cambia l'onda.",
+  "topina, niente decisioni nel picco. Solo sicurezza.",
+  "tata, sei amata anche mentre fai fatica.",
+  "amoremio, fai una pausa prima della prossima mossa.",
+  "topa, scegli una cosa che ti faccia arrivare a domani più intera.",
+  "topina, resta qui con me: il resto dopo.",
+  "tata, ti amo. Non lasciare che la paura parli per te."
 ];
 const QUOTE_QUEUE_KEY='supporto_quote_queue_v3';
 const QUOTE_LAST_KEY='supporto_quote_last_v3';
@@ -943,7 +1031,7 @@ function nextFromDeck(source,state){
 }
 function shouldUseLoveQuote(){
   quoteTapCount++;
-  return loveQuotes.length&&(quoteTapCount%3===0||Math.random()<0.22);
+  return loveQuotes.length&&(quoteTapCount===1||quoteTapCount%2===0||Math.random()<0.72);
 }
 function newQuote(){
   const el=document.getElementById('quote-text');
@@ -962,8 +1050,8 @@ function newQuote(){
 
 
 const TAB_META={
-  'tab-home':['Sofia','Ti amo. Sono qui.'],
-  'tab-stop':['Ferma','Sofia, un minuto alla volta'],
+  'tab-home':['Sofia','amoremio, sono qui.'],
+  'tab-stop':['Ferma','topina, un minuto alla volta'],
   'tab-diary':['Diario di Sofia','Calendario eventi'],
   'tab-progress':['Progressi di Sofia','Bosco e badge'],
   'tab-help':['Aiuto','Mario · 338 218 8083']
