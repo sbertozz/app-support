@@ -1,4 +1,4 @@
-const CACHE = 'supporto-v9';
+const CACHE = 'supporto-v12';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.png'];
 
 self.addEventListener('install', event => {
