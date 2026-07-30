@@ -52,10 +52,9 @@ body::before{
 @media(prefers-color-scheme:dark){body::before{background:linear-gradient(180deg,rgba(24,17,22,.96),rgba(24,17,22,.78) 62%,rgba(24,17,22,0))}}
 .app-header{
   position:fixed;top:0;left:0;right:0;z-index:30;padding:calc(8px + env(safe-area-inset-top)) 14px 8px;
-  background:rgba(255,246,250,.74);border-bottom:1px solid rgba(255,90,138,.10);
-  backdrop-filter:blur(24px) saturate(1.35);-webkit-backdrop-filter:blur(24px) saturate(1.35);
+  background:rgba(255,246,250,.96);border-bottom:1px solid rgba(255,90,138,.10);
 }
-@media(prefers-color-scheme:dark){.app-header{background:rgba(24,17,22,.72);border-bottom-color:rgba(255,143,189,.12)}}
+@media(prefers-color-scheme:dark){.app-header{background:rgba(24,17,22,.96);border-bottom-color:rgba(255,143,189,.12)}}
 .app-header-inner{max-width:430px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .app-brand{display:flex;align-items:center;gap:10px;min-width:0}
 .app-brand img{width:38px;height:38px;border-radius:12px;box-shadow:0 8px 18px rgba(255,90,138,.22);display:block}
@@ -69,30 +68,28 @@ h2{font-size:24px;line-height:1.12;letter-spacing:-.35px;margin-bottom:12px}
 h3{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
 p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .hidden{display:none!important}
-.tabs-viewport{
-  position:relative;display:flex;width:100%;height:100%;overflow-x:auto;overflow-y:hidden;
-  scroll-snap-type:x mandatory;scroll-snap-stop:always;scroll-behavior:smooth;
-  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none;
-  touch-action:pan-x pan-y;isolation:isolate;
-}
-.tabs-viewport::-webkit-scrollbar{display:none}
+.tabs-viewport{position:relative;width:100%;height:100%;overflow:hidden;isolation:isolate;touch-action:pan-y}
 .tab{
-  display:block;flex:0 0 100%;min-width:100%;height:100%;overflow-y:auto;overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-align:start;scroll-snap-stop:always;
+  display:none;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;
   transform:translate3d(0,0,0);backface-visibility:hidden;-webkit-backface-visibility:hidden;
   contain:layout paint style;padding:0 1px 18px;overscroll-behavior-y:contain;
 }
 .tab::-webkit-scrollbar{display:none}
-.tab.active{display:block}
-@media(prefers-reduced-motion:reduce){.tabs-viewport{scroll-behavior:auto}}
+.tab.active{display:block;position:relative;z-index:1}
+.tab.incoming,.tab.outgoing{
+  display:block;position:absolute;inset:0;width:100%;height:100%;overflow-y:hidden;pointer-events:none;
+  will-change:transform;transition:transform .34s cubic-bezier(.22,1,.36,1);
+}
+.tab.incoming{z-index:3}.tab.outgoing{z-index:2}
+.tab.no-transition{transition:none!important}
+@media(prefers-reduced-motion:reduce){.tab.incoming,.tab.outgoing{transition:none}}
 
 .nav{
   position:fixed;bottom:0;left:50%;right:auto;transform:translateX(-50%);width:min(100%,430px);display:flex;justify-content:center;gap:4px;
-  background:rgba(255,255,255,.80);border:1px solid rgba(255,90,138,.14);border-bottom:0;border-radius:26px 26px 0 0;
-  backdrop-filter:blur(26px) saturate(1.35);-webkit-backdrop-filter:blur(26px) saturate(1.35);
+  background:rgba(255,255,255,.94);border:1px solid rgba(255,90,138,.14);border-bottom:0;border-radius:26px 26px 0 0;
   padding:9px 10px calc(10px + env(safe-area-inset-bottom));z-index:30;box-shadow:0 -14px 34px rgba(255,90,138,.12);
 }
-@media(prefers-color-scheme:dark){.nav{background:rgba(25,18,24,.82);box-shadow:0 -14px 34px rgba(0,0,0,.28)}}
+@media(prefers-color-scheme:dark){.nav{background:rgba(25,18,24,.94);box-shadow:0 -14px 34px rgba(0,0,0,.28)}}
 .nav button{background:none;border:none;color:var(--text3);font-size:11px;font-weight:700;display:flex;flex:1;max-width:96px;flex-direction:column;align-items:center;gap:3px;padding:7px 10px;border-radius:18px;transition:all .18s ease}
 .nav button.active{color:var(--pink);background:rgba(255,90,138,.12)}
 .nav svg{width:23px;height:23px}
@@ -299,10 +296,10 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
     <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Tocca quella che hai fatto oppure apri subito WhatsApp.</p>
     <div class="dist-grid">
       <button onclick="markDone(this)">Acqua fredda sul viso</button>
-      <button onclick="markDone(this)">Cammina 5 min</button>
-      <button onclick="markDone(this)">Scrivi 3 righe</button>
+      <button onclick="markDone(this)">Studia fisica</button>
+      <button onclick="markDone(this)">Gioca a burraco</button>
       <button onclick="markDone(this)">Musica forte</button>
-      <button onclick="markDone(this)">Stretch 2 min</button>
+      <button onclick="markDone(this)">Gioca con l'iPad</button>
       <a class="whatsapp-action" href="https://wa.me/393382188083" target="_blank" rel="noopener">WhatsApp Mario</a>
     </div>
   </div>
@@ -435,16 +432,13 @@ const TAB_META={
   'tab-help':['Aiuto','Mario · 338 218 8083']
 };
 const TAB_ORDER=['tab-home','tab-stop','tab-diary','tab-help'];
+const TAB_ANIM_MS=340;
 const tabScrollPositions={};
 let activeTabId='tab-home';
-let pagerScrollTimer=null;
-let pagerTicking=false;
+let tabTransitionTimer=null;
+let transitionRunning=false;
 function raf(fn){(window.requestAnimationFrame||function(cb){return setTimeout(cb,16);})(fn);}
-function pager(){return document.getElementById('tabs-viewport');}
-function tabWidth(){
-  const vp=pager();
-  return (vp&&vp.clientWidth)||Math.min(window.innerWidth||390,430);
-}
+function prefersReducedMotion(){return !!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);}
 function updateAppHeader(id){
   const meta=TAB_META[id]||TAB_META['tab-home'];
   const title=document.getElementById('app-title'),subtitle=document.getElementById('app-subtitle');
@@ -457,71 +451,103 @@ function setActiveNav(id,btn){
   const activeBtn=btn||document.querySelector('.nav button[data-tab="'+id+'"]');
   if(activeBtn)activeBtn.classList.add('active');
 }
-function rememberTabScroll(id){
-  const tab=document.getElementById(id);
-  if(tab)tabScrollPositions[id]=tab.scrollTop||0;
+function rememberTabScroll(id){const tab=document.getElementById(id);if(tab)tabScrollPositions[id]=tab.scrollTop||0;}
+function restoreTabScroll(id){const tab=document.getElementById(id);if(tab&&tabScrollPositions[id]!=null)raf(()=>{tab.scrollTop=tabScrollPositions[id]||0;});}
+function afterTabSelected(id){updateAppHeader(id);if(id==='tab-diary'){renderCalendar();renderEntries();}}
+function cleanupTransition(oldTab,newTab){
+  clearTimeout(tabTransitionTimer);
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.classList.remove('incoming','outgoing','no-transition');
+    t.style.transform='';
+  });
+  if(oldTab&&oldTab!==newTab)oldTab.classList.remove('active');
+  if(newTab)newTab.classList.add('active');
+  transitionRunning=false;
 }
-function restoreTabScroll(id){
-  const tab=document.getElementById(id);
-  if(tab&&tabScrollPositions[id]!=null)raf(()=>{tab.scrollTop=tabScrollPositions[id]||0;});
+function setInstantTab(id,btn){
+  const tab=document.getElementById(id);if(!tab)return;
+  document.querySelectorAll('.tab').forEach(t=>{t.classList.remove('active','incoming','outgoing','no-transition');t.style.transform='';});
+  tab.classList.add('active');activeTabId=id;setActiveNav(id,btn);afterTabSelected(id);restoreTabScroll(id);
 }
-function afterTabSelected(id,light=false){
-  updateAppHeader(id);
-  if(id==='tab-diary'&&!light){renderCalendar();renderEntries();}
-}
-function setActiveTab(id,btn,opts={}){
+function transitionToTab(id,btn,direction){
   if(!TAB_ORDER.includes(id))return;
-  if(activeTabId&&activeTabId!==id)rememberTabScroll(activeTabId);
-  activeTabId=id;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.id===id));
-  setActiveNav(id,btn);
-  afterTabSelected(id,!!opts.light);
+  const oldId=activeTabId;
+  const oldTab=document.getElementById(oldId);
+  const newTab=document.getElementById(id);
+  if(!newTab||oldId===id){setActiveNav(id,btn);afterTabSelected(id);return;}
+  if(transitionRunning){cleanupTransition(oldTab,newTab);}
+  rememberTabScroll(oldId);
+  activeTabId=id;setActiveNav(id,btn);updateAppHeader(id);
+  if(prefersReducedMotion()){setInstantTab(id,btn);return;}
+
+  transitionRunning=true;
+  const dir=direction||Math.sign(TAB_ORDER.indexOf(id)-TAB_ORDER.indexOf(oldId))||1;
+  document.querySelectorAll('.tab').forEach(t=>{if(t!==oldTab&&t!==newTab){t.classList.remove('active','incoming','outgoing','no-transition');t.style.transform='';}});
+  oldTab.classList.add('outgoing','no-transition');
+  newTab.classList.add('incoming','no-transition');
+  oldTab.style.transform='translate3d(0,0,0)';
+  newTab.style.transform='translate3d('+(dir*100)+'%,0,0)';
+  void newTab.offsetWidth;
+  oldTab.classList.remove('no-transition');
+  newTab.classList.remove('no-transition');
+  raf(()=>{
+    oldTab.style.transform='translate3d('+(-dir*100)+'%,0,0)';
+    newTab.style.transform='translate3d(0,0,0)';
+  });
+  tabTransitionTimer=setTimeout(()=>{
+    cleanupTransition(oldTab,newTab);
+    restoreTabScroll(id);
+    afterTabSelected(id);
+  },TAB_ANIM_MS+80);
 }
 function goTab(id,btn,opts={}){
-  if(!TAB_ORDER.includes(id))return;
-  setActiveTab(id,btn,{light:true});
-  const vp=pager();
-  if(vp){
-    const left=TAB_ORDER.indexOf(id)*tabWidth();
-    vp.scrollTo({left,behavior:opts.immediate?'auto':'smooth'});
-  }
-  restoreTabScroll(id);
+  const oldIndex=TAB_ORDER.indexOf(activeTabId),newIndex=TAB_ORDER.indexOf(id);
+  const direction=opts.direction||(oldIndex>=0&&newIndex>=0?Math.sign(newIndex-oldIndex):1)||1;
+  transitionToTab(id,btn,direction);
 }
 function swipeToTab(direction){
   const index=TAB_ORDER.indexOf(currentTabId());
   if(index<0)return;
   const next=Math.min(Math.max(index+direction,0),TAB_ORDER.length-1);
   if(next===index)return;
-  goTab(TAB_ORDER[next]);
-}
-function syncTabFromPager(final=false){
-  const vp=pager();
-  const w=tabWidth();
-  if(!vp||!w)return;
-  const index=Math.max(0,Math.min(TAB_ORDER.length-1,Math.round(vp.scrollLeft/w)));
-  const id=TAB_ORDER[index];
-  if(id&&id!==activeTabId)setActiveTab(id,null,{light:!final});
-  else if(final&&id)afterTabSelected(id,false);
+  transitionToTab(TAB_ORDER[next],null,direction);
 }
 function setupSwipeNavigation(){
-  const vp=pager();
-  if(!vp)return;
-  vp.scrollLeft=TAB_ORDER.indexOf(activeTabId)*tabWidth();
-  vp.addEventListener('scroll',()=>{
-    if(!pagerTicking){
-      pagerTicking=true;
-      raf(()=>{pagerTicking=false;syncTabFromPager(false);});
+  const area=document.getElementById('tabs-viewport')||document.querySelector('.wrap')||document;
+  let sx=0,sy=0,startTime=0,tracking=false,locked=false;
+  function isIgnoredTarget(target){return !!(target&&target.closest&&target.closest('.nav,.app-header,.contact-actions,input,textarea,select'))}
+  function start(x,y,target){if(transitionRunning||isIgnoredTarget(target))return;sx=x;sy=y;startTime=Date.now();tracking=true;locked=false;}
+  function move(x,y,event){
+    if(!tracking)return;
+    const dx=x-sx,dy=y-sy;
+    if(!locked){
+      if(Math.abs(dy)>12&&Math.abs(dy)>Math.abs(dx)*1.1){tracking=false;return;}
+      if(Math.abs(dx)>14&&Math.abs(dx)>Math.abs(dy)*1.08)locked=true;
+      else return;
     }
-    clearTimeout(pagerScrollTimer);
-    pagerScrollTimer=setTimeout(()=>syncTabFromPager(true),160);
-  },{passive:true});
-  window.addEventListener('resize',()=>{
-    clearTimeout(pagerScrollTimer);
-    pagerScrollTimer=setTimeout(()=>{
-      const idx=Math.max(0,TAB_ORDER.indexOf(activeTabId));
-      vp.scrollTo({left:idx*tabWidth(),behavior:'auto'});
-    },120);
-  },{passive:true});
+    if(event&&event.cancelable)event.preventDefault();
+  }
+  function end(x,y,event){
+    if(!tracking)return;
+    const dx=x-sx,dy=y-sy,dt=Date.now()-startTime;
+    tracking=false;
+    if(locked&&event&&event.cancelable)event.preventDefault();
+    if(dt>850)return;
+    if(Math.abs(dx)<58)return;
+    if(Math.abs(dx)<Math.abs(dy)*1.18)return;
+    swipeToTab(dx<0?1:-1);
+  }
+  if('ontouchstart' in window){
+    area.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;const t=e.touches[0];start(t.clientX,t.clientY,e.target);},{passive:true});
+    area.addEventListener('touchmove',e=>{if(!e.touches.length)return;const t=e.touches[0];move(t.clientX,t.clientY,e);},{passive:false});
+    area.addEventListener('touchend',e=>{if(!e.changedTouches.length)return;const t=e.changedTouches[0];end(t.clientX,t.clientY,e);},{passive:false});
+    area.addEventListener('touchcancel',()=>{tracking=false;},{passive:true});
+  }else{
+    area.addEventListener('pointerdown',e=>{if(e.button&&e.button!==0)return;start(e.clientX,e.clientY,e.target);},{passive:true});
+    area.addEventListener('pointermove',e=>move(e.clientX,e.clientY,e),{passive:false});
+    area.addEventListener('pointerup',e=>end(e.clientX,e.clientY,e),{passive:false});
+    area.addEventListener('pointercancel',()=>{tracking=false;},{passive:true});
+  }
 }
 
 const CIRC=364.4;
