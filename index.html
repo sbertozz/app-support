@@ -110,7 +110,7 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
   padding:9px 10px calc(10px + env(safe-area-inset-bottom));z-index:30;box-shadow:0 -14px 34px rgba(255,90,138,.12);
 }
 @media(prefers-color-scheme:dark){.nav{background:rgba(25,18,24,.94);box-shadow:0 -14px 34px rgba(0,0,0,.28)}}
-.nav button{background:none;border:none;color:var(--text3);font-size:11px;font-weight:700;display:flex;flex:1;max-width:96px;flex-direction:column;align-items:center;gap:3px;padding:7px 10px;border-radius:18px;transition:all .18s ease}
+.nav button{background:none;border:none;color:var(--text3);font-size:10.5px;font-weight:700;display:flex;flex:1;max-width:82px;flex-direction:column;align-items:center;gap:3px;padding:7px 6px;border-radius:18px;transition:all .18s ease}
 .nav button.active{color:var(--pink);background:rgba(255,90,138,.12)}
 .nav svg{width:23px;height:23px}
 
@@ -147,8 +147,8 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .garden-pill{flex:0 0 auto;border-radius:999px;padding:8px 10px;background:rgba(52,199,89,.13);color:#16803a;font-size:12px;font-weight:900;border:1px solid rgba(52,199,89,.22)}
 .garden-scene{position:relative;height:190px;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,rgba(138,218,255,.34),rgba(255,246,250,.64) 62%,rgba(196,245,205,.58));border:1px solid rgba(255,255,255,.70);box-shadow:inset 0 1px 0 rgba(255,255,255,.65);margin-bottom:14px}
 .garden-sun{position:absolute;right:24px;top:22px;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff7ad,#ffd76a 64%,rgba(255,215,106,.0));box-shadow:0 0 28px rgba(255,199,64,.42)}
-.garden-ground{position:absolute;left:-8%;right:-8%;bottom:-28px;height:72px;border-radius:50% 50% 0 0;background:linear-gradient(180deg,rgba(94,205,112,.52),rgba(64,177,85,.82))}
-.garden-tree{position:absolute;left:50%;bottom:28px;width:160px;height:140px;transform:translateX(-50%);transform-origin:50% 100%;transition:transform .55s cubic-bezier(.22,1,.36,1)}
+.garden-ground{position:absolute;left:-8%;right:-8%;bottom:-28px;height:72px;border-radius:50% 50% 0 0;background:linear-gradient(180deg,rgba(94,205,112,.52),rgba(64,177,85,.82));z-index:1}
+.garden-tree{position:absolute;left:50%;bottom:28px;width:160px;height:140px;transform:translateX(-50%);transform-origin:50% 100%;transition:transform .55s cubic-bezier(.22,1,.36,1);z-index:2}
 .tree-trunk{position:absolute;left:50%;bottom:8px;width:18px;height:66px;border-radius:999px;background:linear-gradient(90deg,#8b542d,#b8743f 54%,#7b4724);transform:translateX(-50%) scaleY(.25);transform-origin:50% 100%;transition:transform .65s cubic-bezier(.22,1,.36,1),height .65s cubic-bezier(.22,1,.36,1),opacity .3s}
 .tree-leaf{position:absolute;border-radius:50%;background:radial-gradient(circle at 34% 28%,#b7ffb9,#38c960 62%,#17943c);box-shadow:0 12px 24px rgba(22,163,74,.20);opacity:0;transform:scale(.25);transition:all .7s cubic-bezier(.22,1,.36,1)}
 .tree-leaf.one{width:82px;height:76px;left:38px;top:18px}.tree-leaf.two{width:72px;height:68px;left:15px;top:45px}.tree-leaf.three{width:78px;height:72px;right:14px;top:45px}.tree-leaf.four{width:64px;height:60px;left:48px;top:0}
@@ -261,6 +261,46 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .entry-actions button{border:0;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900;background:rgba(255,90,138,.10);color:var(--pink)}
 .entry-actions button.danger{background:rgba(255,59,95,.11);color:var(--danger)}
 
+
+.forest-mini{position:absolute;left:10px;right:10px;bottom:26px;height:78px;pointer-events:none;z-index:1}
+.forest-item{position:absolute;bottom:0;width:24px;height:46px;transform:translateX(-50%) scale(var(--s,1));transform-origin:50% 100%;animation:forestPop .55s cubic-bezier(.22,1,.36,1) both}
+.forest-trunk-mini{position:absolute;left:50%;bottom:0;width:6px;height:20px;border-radius:999px;background:linear-gradient(90deg,#7b4724,#b8743f);transform:translateX(-50%)}
+.forest-crown-mini{position:absolute;left:50%;bottom:12px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#d7ffd7,#43ce68 63%,#159447);transform:translateX(-50%);box-shadow:0 8px 16px rgba(22,163,74,.18)}
+.forest-flower{position:absolute;font-size:13px;transform:translateX(-50%);filter:drop-shadow(0 4px 6px rgba(255,90,138,.18));animation:forestPop .55s cubic-bezier(.22,1,.36,1) both}
+@keyframes forestPop{from{opacity:0;transform:translateX(-50%) scale(.55)}to{opacity:1;transform:translateX(-50%) scale(var(--s,1))}}
+.progress-hero{position:relative;overflow:hidden;background:linear-gradient(155deg,rgba(255,255,255,.92),rgba(255,240,247,.76))}
+.progress-hero::after{content:"";position:absolute;right:-70px;top:-80px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,rgba(52,199,89,.18),transparent 67%);pointer-events:none}
+.progress-top{position:relative;display:grid;grid-template-columns:132px 1fr;gap:14px;align-items:center}
+.progress-ring{position:relative;width:132px;height:132px;display:flex;align-items:center;justify-content:center}
+.progress-ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.progress-ring circle{fill:none;stroke-width:11;stroke-linecap:round}
+.progress-ring .track{stroke:rgba(255,90,138,.12)}
+.progress-ring .fill{stroke:url(#progress-gradient);stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset .8s cubic-bezier(.22,1,.36,1)}
+.progress-ring-center{text-align:center;position:relative;z-index:1}
+.progress-ring-center strong{display:block;font-size:31px;font-weight:950;letter-spacing:-.8px;color:var(--text)}
+.progress-ring-center span{display:block;font-size:10px;font-weight:900;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.progress-copy h3{font-size:18px;margin-bottom:5px}.progress-copy p{font-size:13px;line-height:1.36;margin:0;color:var(--text2);font-weight:700}
+.progress-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:15px}
+.progress-metric{border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.55);padding:10px 6px;text-align:center}
+.progress-metric strong{display:block;font-size:22px;font-weight:950;letter-spacing:-.45px;color:var(--text)}
+.progress-metric span{display:block;font-size:10px;color:var(--text3);font-weight:850;margin-top:2px}
+.week-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;align-items:end;margin-top:8px}
+.week-day{min-width:0;text-align:center}
+.week-stack{height:74px;border-radius:999px;background:rgba(255,90,138,.08);display:flex;align-items:flex-end;justify-content:center;gap:2px;padding:5px 4px;overflow:hidden}
+.week-stack i{display:block;width:8px;min-height:5px;border-radius:999px;transition:height .55s cubic-bezier(.22,1,.36,1)}
+.week-stack .good{background:linear-gradient(180deg,#9cffac,#34c759)}
+.week-stack .hard{background:linear-gradient(180deg,#ffb36b,#ff6b6b)}
+.week-day span{display:block;font-size:10px;font-weight:900;color:var(--text3);margin-top:6px;text-transform:uppercase}
+.badges-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.badge-card{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.52);padding:12px;min-height:82px;opacity:.42;filter:saturate(.55);transition:all .25s cubic-bezier(.22,1,.36,1)}
+.badge-card.unlocked{opacity:1;filter:saturate(1);background:linear-gradient(145deg,rgba(255,255,255,.86),rgba(255,240,247,.62));box-shadow:0 10px 22px rgba(255,90,138,.10)}
+.badge-icon{width:34px;height:34px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:rgba(255,90,138,.12);font-size:18px;flex:0 0 auto}
+.badge-title{font-size:13px;font-weight:950;color:var(--text);line-height:1.18}.badge-desc{font-size:11px;line-height:1.28;color:var(--text3);font-weight:750;margin-top:3px}
+.forest-card{overflow:hidden}.forest-canvas{position:relative;height:190px;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,rgba(138,218,255,.28),rgba(255,246,250,.60) 55%,rgba(196,245,205,.68));border:1px solid rgba(255,255,255,.72);margin-top:12px}
+.forest-canvas .forest-ground{position:absolute;left:-10%;right:-10%;bottom:-32px;height:78px;border-radius:50% 50% 0 0;background:linear-gradient(180deg,rgba(94,205,112,.55),rgba(64,177,85,.82))}
+.forest-canvas .forest-mini{left:8px;right:8px;bottom:30px;height:120px}.forest-canvas .forest-item{width:30px;height:58px}.forest-canvas .forest-crown-mini{width:36px;height:36px;bottom:16px}.forest-canvas .forest-trunk-mini{height:26px;width:7px}
+.forest-summary{font-size:13px;line-height:1.38;color:var(--text2);font-weight:750;margin-top:10px;text-align:center}
+
 .contact-big{display:flex;align-items:center;justify-content:space-between;padding:18px;gap:12px}
 .contact-info .contact-name{font-weight:850;font-size:18px}
 .contact-info .contact-num{font-size:15px;color:var(--text2);margin-top:3px;font-weight:650}
@@ -315,13 +355,14 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
   <div class="card garden-card" id="garden-card">
     <div class="garden-head">
       <div>
-        <div class="garden-title">Il tuo albero</div>
+        <div class="garden-title">Il tuo bosco</div>
         <div class="garden-subtitle" id="garden-message">Ogni resistenza lo fa crescere.</div>
       </div>
       <div class="garden-pill" id="garden-level">Seme</div>
     </div>
     <div class="garden-scene">
       <div class="garden-sun"></div>
+      <div class="forest-mini" id="forest-mini"></div>
       <div class="garden-tree stage-0" id="garden-tree">
         <div class="tree-leaf four"></div>
         <div class="tree-leaf one"></div>
@@ -463,6 +504,60 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
   <div id="entries-list"></div>
 </div>
 
+
+<!-- PROGRESS -->
+<div class="tab" id="tab-progress">
+  <div class="section-head">
+    <p class="eyebrow">Progressi</p>
+    <h2>Guarda cosa stai costruendo</h2>
+  </div>
+
+  <div class="card progress-hero">
+    <div class="progress-top">
+      <div class="progress-ring">
+        <svg viewBox="0 0 110 110" aria-hidden="true">
+          <defs><linearGradient id="progress-gradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#34c759"/><stop offset="100%" stop-color="#ff8fbd"/></linearGradient></defs>
+          <circle class="track" cx="55" cy="55" r="45"/>
+          <circle class="fill" id="progress-ring-fill" cx="55" cy="55" r="45"/>
+        </svg>
+        <div class="progress-ring-center"><strong id="progress-ring-text">0/7</strong><span>settimana</span></div>
+      </div>
+      <div class="progress-copy">
+        <h3 id="progress-title">Settimana da iniziare</h3>
+        <p id="progress-copy">Ogni giorno con una resistenza è una prova concreta che l'automatismo si può interrompere.</p>
+      </div>
+    </div>
+    <div class="progress-metrics">
+      <div class="progress-metric"><strong id="progress-total">0</strong><span>Totali</span></div>
+      <div class="progress-metric"><strong id="progress-week">0</strong><span>Settimana</span></div>
+      <div class="progress-metric"><strong id="progress-month">0</strong><span>Mese</span></div>
+      <div class="progress-metric"><strong id="progress-streak">0</strong><span>Serie</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Ultimi 7 giorni</h3>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Verde = resistenze. Arancio = momenti difficili registrati.</p>
+    <div class="week-bars" id="progress-week-bars"></div>
+  </div>
+
+  <div class="card forest-card">
+    <h3>Il bosco</h3>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Ogni gruppo di resistenze aggiunge alberi, fiori e radici.</p>
+    <div class="forest-canvas">
+      <div class="forest-mini" id="progress-forest"></div>
+      <div class="forest-ground"></div>
+    </div>
+    <div class="forest-summary" id="forest-summary">Il bosco è pronto per il primo seme.</div>
+  </div>
+
+  <div class="card">
+    <h3>Badge sbloccati</h3>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:10px">Non sono premi finti: sono prove visibili dei passaggi che hai protetto.</p>
+    <div class="badges-grid" id="badges-grid"></div>
+  </div>
+</div>
+
 <!-- HELP -->
 <div class="tab" id="tab-help">
   <div class="section-head">
@@ -499,6 +594,9 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
   </button>
   <button data-tab="tab-diary" onclick="goTab('tab-diary',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 10h18"/></svg>Diario
+  </button>
+  <button data-tab="tab-progress" onclick="goTab('tab-progress',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><rect x="7" y="11" width="3" height="5" rx="1"/><rect x="12" y="7" width="3" height="9" rx="1"/><rect x="17" y="3" width="3" height="13" rx="1"/></svg>Progressi
   </button>
   <button data-tab="tab-help" onclick="goTab('tab-help',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Aiuto
@@ -793,9 +891,10 @@ const TAB_META={
   'tab-home':['Supporto','Spazio sicuro'],
   'tab-stop':['Ferma','Modalità emergenza'],
   'tab-diary':['Diario','Calendario eventi'],
+  'tab-progress':['Progressi','Bosco e badge'],
   'tab-help':['Aiuto','Mario · 338 218 8083']
 };
-const TAB_ORDER=['tab-home','tab-stop','tab-diary','tab-help'];
+const TAB_ORDER=['tab-home','tab-stop','tab-diary','tab-progress','tab-help'];
 const TAB_ANIM_MS=340;
 const tabScrollPositions={};
 let activeTabId='tab-home';
@@ -817,7 +916,7 @@ function setActiveNav(id,btn){
 }
 function rememberTabScroll(id){const tab=document.getElementById(id);if(tab)tabScrollPositions[id]=tab.scrollTop||0;}
 function restoreTabScroll(id){const tab=document.getElementById(id);if(tab&&tabScrollPositions[id]!=null)raf(()=>{tab.scrollTop=tabScrollPositions[id]||0;});}
-function afterTabSelected(id){updateAppHeader(id);if(id==='tab-diary'){renderCalendar();renderEntries();}}
+function afterTabSelected(id){updateAppHeader(id);if(id==='tab-diary'){renderCalendar();renderEntries();}if(id==='tab-progress'){updateProgress();}}
 function cleanupTransition(oldTab,newTab){
   clearTimeout(tabTransitionTimer);
   document.querySelectorAll('.tab').forEach(t=>{
@@ -1017,6 +1116,7 @@ function updateStats(){
   const monthEl=document.getElementById('stat-month');
   if(monthEl)monthEl.textContent=monthCount;
   updateGarden();
+  updateProgress();
 }
 function resistedEntries(){return entries.filter(en=>en.type==='resisted');}
 function daysAgoIso(n){const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-n);return isoDate(d);}
@@ -1059,6 +1159,7 @@ function updateGarden(){
   setText('garden-days',days);
   setText('garden-streak',streak);
   setText('garden-level',level.current.name);
+  renderForest('forest-mini',total,streak);
   const message=total===0?'Pianta il primo seme quando resisti a un impulso.':streak>1?'Serie attiva: '+streak+' giorni. Non serve perfezione, serve continuità.':'Hai già fatto crescere qualcosa di concreto.';
   setText('garden-message',message);
   const fill=document.getElementById('garden-progress-fill');
@@ -1084,6 +1185,95 @@ function waterGarden(){
   addEvent('resisted','—');
   animateGarden();
   showToast('Albero annaffiato: resistenza registrata','success');
+}
+function renderForest(containerId,total,streak){
+  const box=document.getElementById(containerId);
+  if(!box)return;
+  if(total<=0){box.innerHTML='<span class="forest-flower" style="left:50%;bottom:6px;font-size:24px">🌱</span>';return;}
+  const count=Math.min(26,Math.max(1,Math.floor(total/3)+1));
+  const flowers=Math.min(10,Math.floor(streak/2));
+  let html='';
+  for(let i=0;i<count;i++){
+    const left=8+((i*23)%84);
+    const bottom=(i*17)%28;
+    const scale=(.72+((i*11)%45)/100).toFixed(2);
+    const delay=(i*.035).toFixed(2)+'s';
+    html+='<div class="forest-item" style="left:'+left+'%;bottom:'+bottom+'px;--s:'+scale+';animation-delay:'+delay+'"><div class="forest-crown-mini"></div><div class="forest-trunk-mini"></div></div>';
+  }
+  for(let i=0;i<flowers;i++){
+    const left=12+((i*31)%78);
+    const bottom=4+((i*13)%24);
+    html+='<span class="forest-flower" style="left:'+left+'%;bottom:'+bottom+'px">'+(i%2?'✿':'🌸')+'</span>';
+  }
+  box.innerHTML=html;
+}
+function startOfWeek(d){const x=new Date(d);x.setHours(12,0,0,0);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x;}
+function dateFromDay(day){return new Date(day+'T12:00:00');}
+function isThisWeek(day){const a=startOfWeek(new Date()).getTime();const b=startOfWeek(dateFromDay(day)).getTime();return a===b;}
+function statsSnapshot(){
+  const resisted=resistedEntries();
+  const hard=entries.filter(en=>en.type==='overeaten'||en.type==='purge');
+  const weekResisted=resisted.filter(en=>isThisWeek(entryDay(en))).length;
+  const weekHard=hard.filter(en=>isThisWeek(entryDay(en))).length;
+  const month=monthKey(new Date());
+  const monthResisted=resisted.filter(en=>entryDay(en).slice(0,7)===month).length;
+  const daySet=resistedDaySet();
+  return {resisted,hard,totalResisted:resisted.length,weekResisted,weekHard,monthResisted,daySet,streak:calcGardenStreak(daySet),weekDays:[...daySet].filter(isThisWeek).length,totalEntries:entries.length};
+}
+function renderWeekBars(){
+  const box=document.getElementById('progress-week-bars');
+  if(!box)return;
+  const start=startOfWeek(new Date());
+  let html='';
+  for(let i=0;i<7;i++){
+    const d=new Date(start);d.setDate(start.getDate()+i);
+    const day=isoDate(d);
+    const good=entries.filter(en=>en.type==='resisted'&&entryDay(en)===day).length;
+    const hard=entries.filter(en=>(en.type==='overeaten'||en.type==='purge')&&entryDay(en)===day).length;
+    const goodH=Math.min(64,Math.max(good?10:0,good*18));
+    const hardH=Math.min(64,Math.max(hard?10:0,hard*18));
+    const label=d.toLocaleDateString('it-IT',{weekday:'short'}).slice(0,3);
+    html+='<div class="week-day"><div class="week-stack"><i class="hard" style="height:'+hardH+'px"></i><i class="good" style="height:'+goodH+'px"></i></div><span>'+label+'</span></div>';
+  }
+  box.innerHTML=html;
+}
+const BADGES=[
+  {id:'first',icon:'🌱',title:'Primo seme',desc:'Prima resistenza registrata',ok:s=>s.totalResisted>=1},
+  {id:'three',icon:'🌿',title:'Radici',desc:'3 resistenze totali',ok:s=>s.totalResisted>=3},
+  {id:'seven',icon:'🌳',title:'Alberello',desc:'7 resistenze totali',ok:s=>s.totalResisted>=7},
+  {id:'forest',icon:'🌲',title:'Bosco',desc:'30 resistenze totali',ok:s=>s.totalResisted>=30},
+  {id:'streak3',icon:'🔥',title:'Serie 3',desc:'3 giorni di continuità',ok:s=>s.streak>=3},
+  {id:'streak7',icon:'☀️',title:'Settimana viva',desc:'7 giorni di continuità',ok:s=>s.streak>=7},
+  {id:'honest',icon:'📝',title:'Diario onesto',desc:'10 eventi registrati',ok:s=>s.totalEntries>=10},
+  {id:'bounce',icon:'🛟',title:'Ripartenza',desc:'Resistere dopo giorni difficili',ok:s=>s.totalResisted>=1&&s.hard.length>=1}
+];
+function renderBadges(stats){
+  const box=document.getElementById('badges-grid');
+  if(!box)return;
+  box.innerHTML=BADGES.map(b=>{
+    const unlocked=b.ok(stats);
+    return '<div class="badge-card '+(unlocked?'unlocked':'')+'"><div class="badge-icon">'+b.icon+'</div><div><div class="badge-title">'+b.title+'</div><div class="badge-desc">'+b.desc+'</div></div></div>';
+  }).join('');
+}
+function updateProgress(){
+  const ring=document.getElementById('progress-ring-fill');
+  if(!ring)return;
+  const stats=statsSnapshot();
+  const pct=Math.min(1,stats.weekDays/7);
+  ring.style.strokeDashoffset=String(283-(283*pct));
+  const setText=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
+  setText('progress-ring-text',stats.weekDays+'/7');
+  setText('progress-total',stats.totalResisted);
+  setText('progress-week',stats.weekResisted);
+  setText('progress-month',stats.monthResisted);
+  setText('progress-streak',stats.streak);
+  setText('progress-title',stats.weekDays>=7?'Settimana completa':stats.weekDays>=3?'Settimana in movimento':stats.weekDays>0?'Hai già iniziato':'Settimana da iniziare');
+  const copy=stats.weekDays>=7?'Hai almeno una resistenza in ogni giorno della settimana. Questo è un segnale enorme di continuità.':stats.weekDays>0?'Ci sono già '+stats.weekDays+' giorni con almeno una resistenza. Il prossimo obiettivo è aggiungere un altro giorno, non essere perfetta.':'Quando registri una resistenza, qui vedi la settimana riempirsi.';
+  setText('progress-copy',copy);
+  renderWeekBars();
+  renderBadges(stats);
+  renderForest('progress-forest',stats.totalResisted,stats.streak);
+  setText('forest-summary',stats.totalResisted?('Il tuo bosco ha '+stats.totalResisted+' resistenze, '+stats.daySet.size+' giorni protetti e una serie di '+stats.streak+'.'):'Il bosco è pronto per il primo seme.');
 }
 function selectEvent(btn,type){
   document.querySelectorAll('#event-types .event-btn').forEach(b=>b.classList.remove('selected'));
