@@ -187,14 +187,29 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .win-btn{width:100%;padding:16px;border:1px solid rgba(52,199,89,.32);border-radius:22px;background:linear-gradient(135deg,rgba(52,199,89,.16),rgba(52,199,89,.07));color:var(--positive);font-size:16px;font-weight:800;margin-bottom:14px;transition:transform .12s ease;box-shadow:0 12px 24px rgba(52,199,89,.10)}
 .win-btn:active{transform:scale(.98)}
 
-.breath-wrap{display:flex;flex-direction:column;align-items:center;padding:14px 0 4px;min-height:176px;justify-content:center}
-.breath-circle{width:104px;height:104px;border-radius:50%;border:3px solid rgba(255,90,138,.55);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;text-align:center;background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.95),rgba(255,240,246,.8));box-shadow:inset 0 1px 8px rgba(255,255,255,.8),0 16px 32px rgba(255,90,138,.16);transition:all 4s ease-in-out}
-.breath-circle.inhale{transform:scale(1.48);border-color:var(--positive);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(225,255,234,.85));box-shadow:0 18px 38px rgba(52,199,89,.18)}
-.breath-circle.exhale{transform:scale(1);border-color:rgba(255,90,138,.55)}
-.breath-toggle{margin-top:16px;padding:10px 24px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.65);color:var(--text);font-size:14px;font-weight:800}
-.breath-tabs{display:flex;gap:8px;margin-bottom:10px;background:rgba(255,90,138,.08);padding:5px;border-radius:16px}
-.breath-tabs button{flex:1;padding:10px;border:0;border-radius:12px;background:transparent;color:var(--text2);font-weight:800;font-size:13px}
+.breath-card{overflow:hidden}
+.breath-tabs{display:flex;gap:8px;margin-bottom:12px;background:rgba(255,90,138,.08);padding:5px;border-radius:16px}
+.breath-tabs button{flex:1;padding:10px 6px;border:0;border-radius:12px;background:transparent;color:var(--text2);font-weight:900;font-size:12.5px}
 .breath-tabs button.active{background:var(--surface-solid);color:var(--pink);box-shadow:0 5px 12px rgba(255,90,138,.10)}
+.breath-desc{font-size:13px!important;line-height:1.38!important;color:var(--text3)!important;margin-bottom:10px!important;font-weight:750}
+.breath-stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:286px;padding:8px 0 0}
+.breath-orb-wrap{height:176px;display:flex;align-items:center;justify-content:center;width:100%;position:relative}
+.breath-orb-wrap::before{content:"";position:absolute;width:172px;height:172px;border-radius:50%;background:radial-gradient(circle,rgba(255,90,138,.12),transparent 68%);filter:blur(.2px)}
+.breath-orb{--breath-scale:1;--breath-duration:4s;width:118px;height:118px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;z-index:1;transform:scale(var(--breath-scale));transition:transform var(--breath-duration) cubic-bezier(.22,1,.36,1),background .45s ease,border-color .45s ease,box-shadow .45s ease;border:3px solid rgba(255,90,138,.34);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(255,240,246,.82));box-shadow:inset 0 1px 10px rgba(255,255,255,.86),0 18px 38px rgba(255,90,138,.15)}
+.breath-orb.inhale{border-color:rgba(52,199,89,.55);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(220,255,232,.88));box-shadow:0 20px 42px rgba(52,199,89,.18)}
+.breath-orb.hold{border-color:rgba(90,200,250,.58);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(225,245,255,.88));box-shadow:0 20px 42px rgba(90,200,250,.16)}
+.breath-orb.exhale{border-color:rgba(255,143,189,.48);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(255,232,243,.88));box-shadow:0 14px 30px rgba(255,90,138,.12)}
+.breath-orb-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px}
+.breath-phase{font-size:13px;font-weight:950;color:var(--text);line-height:1.12}
+.breath-count{font-size:34px;font-weight:950;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-1px;color:var(--pink)}
+.breath-progress{width:100%;height:9px;border-radius:999px;background:rgba(255,90,138,.10);overflow:hidden;margin:12px 0 8px}
+.breath-progress-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#5ac8fa,#34c759,#ff8fbd);transition:width .32s linear}
+.breath-meta{width:100%;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:850;color:var(--text3);margin-bottom:12px}
+.breath-btns{display:flex;gap:9px;width:100%;margin-top:2px}
+.breath-btns button{flex:1;padding:13px 16px;border-radius:16px;border:1px solid var(--border);background:rgba(255,255,255,.62);color:var(--text);font-size:14px;font-weight:900;box-shadow:0 6px 14px rgba(31,23,32,.04)}
+.breath-btns button.primary{background:linear-gradient(135deg,var(--pink),var(--pink2));border-color:transparent;color:#fff;box-shadow:0 12px 24px rgba(255,90,138,.20)}
+.breath-tip{margin-top:10px;padding:11px 12px;border-radius:16px;background:rgba(90,200,250,.10);color:var(--text2);font-size:12.5px;line-height:1.35;font-weight:750;text-align:center}
+.breath-complete{background:rgba(52,199,89,.12)!important;color:#16803a!important}
 
 .sense-list{list-style:none;padding:0;margin:0}
 .sense-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--border);transition:opacity .15s,transform .12s}
@@ -410,15 +425,30 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
     </div>
   </div>
 
-  <div class="card">
+  <div class="card breath-card">
+    <h3>Respiro guidato</h3>
     <div class="breath-tabs">
-      <button class="active" onclick="setBreathType('square',this)">Quadrato</button>
+      <button class="active" onclick="setBreathType('calm',this)">Calma</button>
+      <button onclick="setBreathType('square',this)">Quadrato</button>
       <button onclick="setBreathType('478',this)">4-7-8</button>
     </div>
-    <p style="font-size:13px;color:var(--text3);margin-bottom:8px" id="breath-desc">Segui il cerchio. Inspira quando cresce.</p>
-    <div class="breath-wrap">
-      <div class="breath-circle" id="breath-circle">Inspira</div>
-      <button class="breath-toggle" id="breath-toggle" onclick="toggleBreath()">Avvia</button>
+    <p class="breath-desc" id="breath-desc">Inspira 4, espira 6. È il più semplice quando l'urgenza è alta.</p>
+    <div class="breath-stage">
+      <div class="breath-orb-wrap">
+        <div class="breath-orb exhale" id="breath-circle">
+          <div class="breath-orb-inner">
+            <span class="breath-phase" id="breath-phase">Pronta</span>
+            <strong class="breath-count" id="breath-count">--</strong>
+          </div>
+        </div>
+      </div>
+      <div class="breath-progress"><div class="breath-progress-fill" id="breath-progress-fill"></div></div>
+      <div class="breath-meta"><span id="breath-step">Fase 0/0</span><span id="breath-cycle">Giro 0</span></div>
+      <div class="breath-btns">
+        <button class="primary" id="breath-toggle" onclick="toggleBreath()">Avvia</button>
+        <button onclick="resetBreath()">Reset</button>
+      </div>
+      <div class="breath-tip" id="breath-tip">Tieni lo sguardo sul cerchio. Se ti perdi, ricomincia dalla prossima espirazione.</div>
     </div>
   </div>
 
@@ -1024,25 +1054,133 @@ function toggleTimer(){
 }
 function resetTimer(){clearInterval(ti);tr=false;ts=600;document.getElementById('timer-text').textContent='10:00';updateCircle();document.getElementById('timer-done').classList.add('hidden');const b=document.getElementById('timer-btn');b.textContent='Inizia';b.disabled=false;b.classList.add('primary');}
 
-let breathType='square',bi=null,br=false;
+const BREATH_PATTERNS={
+  calm:{
+    name:'Calma',
+    desc:"Inspira 4, espira 6. È il più semplice quando l'urgenza è alta.",
+    tip:'Espira più a lungo di quanto inspiri: stai dicendo al corpo che non c’è pericolo immediato.',
+    goal:6,
+    phases:[
+      {key:'inhale',label:'Inspira',seconds:4,scale:1.34},
+      {key:'exhale',label:'Espira lento',seconds:6,scale:.88}
+    ]
+  },
+  square:{
+    name:'Quadrato',
+    desc:'4 lati: inspira, trattieni, espira, trattieni. Utile quando la mente corre.',
+    tip:'Immagina di disegnare un quadrato: un lato per ogni fase. Non forzare il respiro.',
+    goal:4,
+    phases:[
+      {key:'inhale',label:'Inspira',seconds:4,scale:1.34},
+      {key:'hold',label:'Trattieni',seconds:4,scale:1.34},
+      {key:'exhale',label:'Espira',seconds:4,scale:.88},
+      {key:'hold',label:'Pausa',seconds:4,scale:.88}
+    ]
+  },
+  '478':{
+    name:'4-7-8',
+    desc:'Inspira 4, trattieni 7, espira 8. Fallo dolcemente, senza sforzo.',
+    tip:'Se 7 o 8 secondi sono troppi, accorcia: l’obiettivo è calmare, non performare.',
+    goal:4,
+    phases:[
+      {key:'inhale',label:'Inspira',seconds:4,scale:1.34},
+      {key:'hold',label:'Trattieni',seconds:7,scale:1.34},
+      {key:'exhale',label:'Espira lento',seconds:8,scale:.86}
+    ]
+  }
+};
+let breathType='calm',breathTimer=null,breathRunning=false,breathCompleted=false,breathPhaseIndex=0,breathRemaining=0,breathPhaseTotal=0,breathCycle=1;
+function breathPattern(){return BREATH_PATTERNS[breathType]||BREATH_PATTERNS.calm;}
+function breathEls(){return {
+  orb:document.getElementById('breath-circle'),
+  phase:document.getElementById('breath-phase'),
+  count:document.getElementById('breath-count'),
+  fill:document.getElementById('breath-progress-fill'),
+  step:document.getElementById('breath-step'),
+  cycle:document.getElementById('breath-cycle'),
+  tip:document.getElementById('breath-tip'),
+  toggle:document.getElementById('breath-toggle'),
+  desc:document.getElementById('breath-desc')
+};}
+function setBreathOrb(phase){
+  const e=breathEls();
+  if(!e.orb||!phase)return;
+  e.orb.className='breath-orb '+phase.key;
+  e.orb.style.setProperty('--breath-scale',phase.scale||1);
+  e.orb.style.setProperty('--breath-duration',Math.max(1,phase.seconds)+'s');
+}
+function updateBreathUI(){
+  const pattern=breathPattern(),phase=pattern.phases[breathPhaseIndex]||pattern.phases[0],e=breathEls();
+  if(e.desc)e.desc.textContent=pattern.desc;
+  if(e.phase)e.phase.textContent=breathCompleted?'Fatto':(breathRunning||breathRemaining?phase.label:'Pronta');
+  if(e.count)e.count.textContent=breathCompleted?'✓':(breathRunning||breathRemaining?breathRemaining:'--');
+  if(e.step)e.step.textContent='Fase '+(breathCompleted?pattern.phases.length:(breathPhaseIndex+1))+'/'+pattern.phases.length;
+  if(e.cycle)e.cycle.textContent='Giro '+(breathCompleted?pattern.goal:(breathRunning||breathRemaining?breathCycle:0))+'/'+pattern.goal;
+  const pct=breathPhaseTotal?Math.max(0,Math.min(100,((breathPhaseTotal-breathRemaining)/breathPhaseTotal)*100)):0;
+  if(e.fill)e.fill.style.width=pct+'%';
+  if(e.tip){
+    e.tip.textContent=breathCompleted?'Sessione completata. Se ti serve, puoi farne un altro giro.':pattern.tip;
+    e.tip.classList.toggle('breath-complete',breathCompleted);
+  }
+}
+function startBreathPhase(index){
+  breathCompleted=false;
+  const pattern=breathPattern();
+  breathPhaseIndex=index%pattern.phases.length;
+  if(index>=pattern.phases.length)breathCycle++;
+  const phase=pattern.phases[breathPhaseIndex];
+  breathRemaining=phase.seconds;
+  breathPhaseTotal=phase.seconds;
+  setBreathOrb(phase);
+  haptic('light');
+  updateBreathUI();
+}
+function breathTick(){
+  breathRemaining--;
+  if(breathRemaining<=0){
+    const pattern=breathPattern();
+    if(breathPhaseIndex===pattern.phases.length-1&&breathCycle>=pattern.goal){
+      stopBreath(true);
+      return;
+    }
+    startBreathPhase(breathPhaseIndex+1);
+    return;
+  }
+  updateBreathUI();
+}
+function stopBreath(completed=false){
+  clearInterval(breathTimer);breathTimer=null;breathRunning=false;breathCompleted=completed;
+  const e=breathEls();
+  if(e.toggle){e.toggle.textContent=completed?'Fatto':'Riprendi';e.toggle.classList.add('primary');}
+  if(completed){showToast('Respiro completato','success');haptic('success');}
+  updateBreathUI();
+}
 function setBreathType(type,btn){
   breathType=type;
+  clearInterval(breathTimer);breathTimer=null;breathRunning=false;breathCompleted=false;breathPhaseIndex=0;breathRemaining=0;breathPhaseTotal=0;breathCycle=1;
   document.querySelectorAll('.breath-tabs button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('breath-desc').textContent=type==='square'?'Segui il cerchio. Inspira quando cresce.':'Inspira 4, trattieni 7, espira 8.';
-  if(br){toggleBreath();toggleBreath();}
+  if(btn)btn.classList.add('active');
+  const first=breathPattern().phases[0];
+  setBreathOrb(first);
+  const e=breathEls();
+  if(e.toggle){e.toggle.textContent='Avvia';e.toggle.classList.add('primary');}
+  updateBreathUI();
 }
 function toggleBreath(){
-  const c=document.getElementById('breath-circle'),b=document.getElementById('breath-toggle');
-  if(br){clearInterval(bi);br=false;b.textContent='Avvia';c.className='breath-circle';c.textContent='Inspira';return;}
-  br=true;b.textContent='Ferma';
-  if(breathType==='square'){
-    let i=true;c.className='breath-circle inhale';c.textContent='Inspira';
-    bi=setInterval(()=>{i=!i;if(i){c.className='breath-circle inhale';c.textContent='Inspira';}else{c.className='breath-circle exhale';c.textContent='Espira';}},4000);
-  }else{
-    let step=0;c.className='breath-circle inhale';c.textContent='Inspira 4';
-    bi=setInterval(()=>{step=(step+1)%3;if(step===0){c.className='breath-circle inhale';c.textContent='Inspira 4';}else if(step===1){c.className='breath-circle';c.textContent='Trattieni 7';}else{c.className='breath-circle exhale';c.textContent='Espira 8';}},4000);
-  }
+  const e=breathEls();
+  if(breathRunning){stopBreath(false);return;}
+  breathRunning=true;
+  if(e.toggle){e.toggle.textContent='Pausa';e.toggle.classList.remove('primary');}
+  if(!breathRemaining||breathCompleted){breathCycle=1;breathCompleted=false;startBreathPhase(0);}else{setBreathOrb(breathPattern().phases[breathPhaseIndex]);updateBreathUI();}
+  clearInterval(breathTimer);
+  breathTimer=setInterval(breathTick,1000);
+}
+function resetBreath(){
+  clearInterval(breathTimer);breathTimer=null;breathRunning=false;breathCompleted=false;breathPhaseIndex=0;breathRemaining=0;breathPhaseTotal=0;breathCycle=1;
+  const e=breathEls(),first=breathPattern().phases[0];
+  setBreathOrb(first);
+  if(e.toggle){e.toggle.textContent='Avvia';e.toggle.classList.add('primary');}
+  updateBreathUI();
 }
 
 function toggleSense(el){el.classList.toggle('done');haptic('light');}
@@ -1412,7 +1550,7 @@ function setupTapAnimations(){
   },true);
 }
 
-setupAppShell();loadData();updateStats();renderCalendar();renderEntries();newQuote();updateAppHeader('tab-home');setupSwipeNavigation();setupTapAnimations();
+setupAppShell();loadData();updateStats();renderCalendar();renderEntries();newQuote();updateAppHeader('tab-home');setupSwipeNavigation();setupTapAnimations();resetBreath();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
 </script>
 </body>
