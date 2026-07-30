@@ -1006,6 +1006,7 @@ const LOVE_LAST_KEY='supporto_love_quote_last_v1';
 let quoteQueue=[];
 let loveQuoteQueue=[];
 let quoteTapCount=0;
+let nextQuotePersonal=Math.random()<0.5;
 function shuffleArray(arr){
   for(let i=arr.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
@@ -1042,7 +1043,10 @@ function nextFromDeck(source,state){
 }
 function shouldUseLoveQuote(){
   quoteTapCount++;
-  return loveQuotes.length&&(quoteTapCount===1||quoteTapCount%2===0||Math.random()<0.72);
+  if(!loveQuotes.length)return false;
+  const usePersonal=nextQuotePersonal;
+  nextQuotePersonal=!nextQuotePersonal;
+  return usePersonal;
 }
 function newQuote(){
   const el=document.getElementById('quote-text');
