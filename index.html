@@ -7,10 +7,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Supporto">
+<meta name="apple-mobile-web-app-title" content="Sofia">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon.png">
-<title>Supporto</title>
+<title>Sofia</title>
 <style>
 :root{
   --text:#1f1720;--text2:#786a75;--text3:#ad9ca9;
@@ -195,13 +195,13 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .breath-stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:286px;padding:8px 0 0}
 .breath-orb-wrap{height:198px;display:flex;align-items:center;justify-content:center;width:100%;position:relative}
 .breath-orb-wrap::before{content:"";position:absolute;width:194px;height:194px;border-radius:50%;background:radial-gradient(circle,rgba(255,90,138,.12),transparent 68%);filter:blur(.2px)}
-.breath-orb{--breath-scale:1;--breath-duration:4s;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;z-index:1;transform:scale(var(--breath-scale));transition:transform var(--breath-duration) cubic-bezier(.22,1,.36,1),background .45s ease,border-color .45s ease,box-shadow .45s ease;border:3px solid rgba(255,90,138,.34);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(255,240,246,.82));box-shadow:inset 0 1px 10px rgba(255,255,255,.86),0 18px 38px rgba(255,90,138,.15)}
+.breath-orb{--breath-scale:1;--breath-duration:4s;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;z-index:1;transform:scale(var(--breath-scale));transition:transform var(--breath-duration) cubic-bezier(.22,1,.36,1),background .45s ease,border-color .45s ease,box-shadow .45s ease;border:3px solid rgba(255,90,138,.34);background:radial-gradient(circle at 35% 28%,#fff,#ffe7f1 82%);box-shadow:inset 0 1px 10px rgba(255,255,255,.92),0 18px 38px rgba(255,90,138,.15)}
 .breath-orb.inhale{border-color:rgba(52,199,89,.55);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(220,255,232,.88));box-shadow:0 20px 42px rgba(52,199,89,.18)}
 .breath-orb.hold{border-color:rgba(90,200,250,.58);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(225,245,255,.88));box-shadow:0 20px 42px rgba(90,200,250,.16)}
 .breath-orb.exhale{border-color:rgba(255,143,189,.48);background:radial-gradient(circle at 35% 28%,rgba(255,255,255,.96),rgba(255,232,243,.88));box-shadow:0 14px 30px rgba(255,90,138,.12)}
-.breath-orb-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:16px;max-width:118px}
-.breath-phase{font-size:15px;font-weight:950;color:var(--text);line-height:1.08;letter-spacing:-.15px;max-width:112px;white-space:normal}
-.breath-count{font-size:46px;font-weight:950;line-height:.95;font-variant-numeric:tabular-nums;letter-spacing:-1.4px;color:var(--pink);text-shadow:0 1px 0 rgba(255,255,255,.65)}
+.breath-orb-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:14px 16px;max-width:122px;background:rgba(255,255,255,.94);border:1px solid rgba(31,23,32,.08);border-radius:28px;box-shadow:0 8px 20px rgba(31,23,32,.10)}
+.breath-phase{font-size:16px;font-weight:950;color:#181018;line-height:1.04;letter-spacing:-.2px;max-width:116px;white-space:normal;text-shadow:0 1px 0 #fff}
+.breath-count{font-size:48px;font-weight:950;line-height:.92;font-variant-numeric:tabular-nums;letter-spacing:-1.4px;color:#d4145a;text-shadow:0 1px 0 #fff}
 .breath-progress{width:100%;height:9px;border-radius:999px;background:rgba(255,90,138,.10);overflow:hidden;margin:12px 0 8px}
 .breath-progress-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#5ac8fa,#34c759,#ff8fbd);transition:width .32s linear}
 .breath-meta{width:100%;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:850;color:var(--text3);margin-bottom:12px}
@@ -329,8 +329,8 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 <div class="app-loader" id="app-loader" aria-hidden="true">
   <div class="loader-card">
     <img src="icon.png" alt="">
-    <div class="loader-title">Supporto</div>
-    <div class="loader-subtitle">Uno spazio sicuro</div>
+    <div class="loader-title">Sofia</div>
+    <div class="loader-subtitle">Ti amo. Sono qui.</div>
   </div>
 </div>
 <div class="toast-host" id="toast-host" aria-live="polite" aria-atomic="true"></div>
@@ -339,8 +339,8 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
     <div class="app-brand">
       <img src="icon.png" alt="">
       <div>
-        <span class="app-title" id="app-title">Supporto</span>
-        <span class="app-subtitle" id="app-subtitle">Spazio sicuro</span>
+        <span class="app-title" id="app-title">Sofia</span>
+        <span class="app-subtitle" id="app-subtitle">Uno spazio sicuro per te</span>
       </div>
     </div>
     <button class="quick-help" onclick="goTab('tab-help')">SOS</button>
@@ -354,8 +354,8 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 <div class="tab active" id="tab-home">
   <div class="home-hero">
     <p class="eyebrow">Supporto rapido</p>
-    <h1>Resta qui, adesso.</h1>
-    <p>Se l'impulso è forte, entra subito nella modalità emergenza.</p>
+    <h1>Sofia, resta qui, adesso.</h1>
+    <p>Questo posto è per te. Se l'impulso è forte, entra subito nella modalità emergenza.</p>
     <button class="sos-big" onclick="goTab('tab-stop')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>
       Ferma l'impulso
@@ -363,14 +363,14 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
     <p class="sos-sub">Ti porta direttamente nel tab Ferma.</p>
   </div>
   <button class="quote-box quote-button" type="button" onclick="newQuote()" aria-label="Nuova frase di supporto">
-    <div class="quote-text" id="quote-text">"Non trattare l'urgenza come un ordine. È un segnale, non un comando."</div>
+    <div class="quote-text" id="quote-text">"Sofia, resta qui con me un minuto. Ti amo."</div>
     <div class="quote-hint">Tocca la frase per cambiarla</div>
   </button>
 
   <div class="card garden-card" id="garden-card">
     <div class="garden-head">
       <div>
-        <div class="garden-title">Il tuo bosco</div>
+        <div class="garden-title">Il bosco di Sofia</div>
         <div class="garden-subtitle" id="garden-message">Ogni resistenza lo fa crescere.</div>
       </div>
       <div class="garden-pill" id="garden-level">Seme</div>
@@ -676,7 +676,7 @@ const quotes=[
   "Questo impulso non merita una decisione definitiva. Merita distanza, acqua e tempo.",
   "Non stai fallendo perché senti l'impulso. Stai combattendo perché non lo segui subito.",
   "Fai l'azione più piccola che ti sposta: piedi fuori dalla stanza, luce accesa, respiro.",
-  "Il disturbo chiede segretezza. La guarigione inizia quando interrompi il segreto.",
+  "L'impulso cresce nel segreto. La strada nuova inizia quando lo interrompi.",
   "Tu non devi vincere tutta la giornata. Devi vincere questo passaggio.",
   "Se senti 'non ce la faccio', prova a dire: 'non ancora, aspetto due minuti'.",
   "L'urgenza sale, resta, poi scende. Non serve spingerla via: serve non obbedirle.",
@@ -690,7 +690,7 @@ const quotes=[
   "Sposta l'urgenza nel calendario, non nel corpo: registra l'evento e resta qui.",
   "Quello che vuoi davvero non è farti male: è far finire questa tensione. Ci sono altri modi.",
   "Apri una porta, cambia aria, tieni le mani occupate. Riduci l'accesso al gesto.",
-  "La parte sana non deve urlare. Basta che prema un bottone prima del disturbo.",
+  "La parte sana non deve urlare. Basta che prema un bottone prima dell'impulso.",
   "Conta solo il prossimo gesto: niente bagno, niente isolamento, niente decisioni da sola.",
   "Se il pensiero insiste, trattalo come spam: lo vedi, ma non clicchi.",
   "Il controllo che sembra controllo spesso è prigione. Resistere è scegliere libertà.",
@@ -701,7 +701,7 @@ const quotes=[
   "Il corpo impara dalla ripetizione. Ogni volta che rimandi, gli insegni che può sopravvivere.",
   "Non devi punirti per avere bisogno. Devi rispondere al bisogno senza violenza.",
   "Tra un'ora potresti essere grata di aver protetto questi dieci minuti.",
-  "Il disturbo promette silenzio. Poi chiede altro. Non iniziare la trattativa.",
+  "L'impulso promette silenzio. Poi chiede altro. Non iniziare la trattativa.",
   "Scegli la versione di te che domani mattina vorrebbe essere stata protetta.",
   "Quando tutto sembra urgente, fai lento: inspira, appoggia i piedi, guarda la stanza.",
   "Non devi spiegare tutto a Mario. Basta far sapere che non vuoi stare sola adesso.",
@@ -721,7 +721,7 @@ const quotes=[
   "Il picco non è una sentenza. È una curva: se non la alimenti, scende.",
   "Non aspettare di sentirti forte. Usa la struttura dell'app al posto della forza.",
   "Fermarsi a metà del pensiero è già una vittoria: non devi arrivare fino in fondo al rituale.",
-  "Se ti vergogni, il disturbo sta provando a zittirti. Scrivi a qualcuno proprio adesso.",
+  "Se ti vergogni, la paura sta provando a zittirti. Scrivi a qualcuno proprio adesso.",
   "La tua urgenza chiede isolamento; la tua cura chiede presenza.",
   "Questa è una finestra di scelta. Piccola, ma reale.",
   "Anche se oggi è difficile, puoi fare una cosa diversa dai soliti automatismi.",
@@ -738,11 +738,11 @@ const quotes=[
   "Lascia che l'impulso sia rumoroso. Tu scegli un gesto silenzioso ma protettivo.",
   "La libertà spesso inizia con una scelta poco romantica: aspettare, chiamare, uscire dalla stanza.",
   "Non fare dell'errore possibile una scusa per arrenderti prima. Resta nel minuto presente.",
-  "Il bisogno sotto l'impulso è reale. Il modo in cui il disturbo vuole rispondere non è l'unico.",
+  "Il bisogno sotto l'impulso è reale. Il vecchio modo di rispondere non è l'unico.",
   "Metti una barriera fisica tra te e il gesto: distanza, porta aperta, telefono in mano.",
   "Se non sai cosa fare, fai questo: timer 10 minuti, acqua fredda, messaggio a Mario.",
   "Ogni volta che interrompi la sequenza, anche solo per poco, stai indebolendo l'automatismo.",
-  "La voce del disturbo sembra tua perché è vicina. Ma non decide per te.",
+  "La voce della paura sembra tua perché è vicina. Ma non decide per te.",
   "Non devi dimostrare niente a nessuno. Devi solo restare dalla tua parte.",
   "La tensione chiede scarico. Tu puoi scegliere uno scarico che non ti ferisce.",
   "Questo momento è difficile, non impossibile. Trattalo come un'emergenza: semplice, concreto, subito.",
@@ -750,7 +750,7 @@ const quotes=[
   "Il pensiero 'solo questa volta' è una porta già conosciuta. Oggi puoi non aprirla.",
   "Se l'impulso torna, non significa che hai perso. Significa che devi ripetere il piano.",
   "Non devi avere voglia di salvarti per fare un'azione che ti protegge.",
-  "Dieci minuti non risolvono tutto. Ma possono evitare che il disturbo decida tutto.",
+  "Dieci minuti non risolvono tutto. Ma possono evitare che l'impulso decida tutto.",
   "La cura non sempre sembra dolce. A volte sembra mettere il telefono in mano e chiedere aiuto.",
   "Quando la mente stringe, allarga l'ambiente: luce, aria, spazio, contatto.",
   "Rimandare non è poco. È una frattura nell'abitudine.",
@@ -769,10 +769,10 @@ const quotes=[
   "Fai una cosa incompatibile con il rituale per 90 secondi: mani occupate, voce di qualcuno, stanza aperta.",
   "Non devi essere convinta. Devi solo non chiudere la porta alla parte che vuole stare meglio.",
   "Quando l'urgenza stringe, riduci il compito: non guarire adesso, solo non farti male adesso.",
-  "Il disturbo vuole farti credere che il gesto sia inevitabile. Il ritardo dimostra che non lo è.",
+  "L'impulso vuole farti credere che il gesto sia inevitabile. Il ritardo dimostra che non lo è.",
   "Se senti vergogna, nomina il fatto senza giudizio: 'sto avendo un impulso'. Non sei l'impulso.",
   "Il momento più pericoloso è quello automatico. Qualsiasi pausa è un'interruzione utile.",
-  "Scegli un'azione che il disturbo odia: luce accesa, telefono in mano, qualcuno avvisato.",
+  "Scegli un'azione che rompe il pilota automatico: luce accesa, telefono in mano, qualcuno avvisato.",
   "Non cercare di vincere nella testa. Vinci con i piedi: spostati, esci, cambia stanza.",
   "Ogni minuto senza seguire il rituale è un minuto in cui il cervello impara un'uscita nuova.",
   "Se il pensiero dice 'devo', prova a sostituirlo con 'sto avendo l'impulso di'. Cambia distanza.",
@@ -783,7 +783,7 @@ const quotes=[
   "Il tuo sistema nervoso è acceso. Spegnerlo con il rituale lo riaccende dopo. Cerca sicurezza, non punizione.",
   "Se hai già iniziato la sequenza, puoi comunque interromperla. Non esiste 'troppo tardi' per fermarsi.",
   "La scelta più protettiva può sembrare noiosa: aspettare, bere, chiamare, respirare.",
-  "Il disturbo ti isola prima di colpirti. Rompi l'isolamento prima di discutere con lui.",
+  "La crisi ti isola prima di crescere. Rompi l'isolamento prima di restarci dentro.",
   "Se non riesci a volerti bene, comportati come se stessi proteggendo una persona cara.",
   "L'urgenza non chiede consenso, chiede reazione. Tu puoi rallentare abbastanza da scegliere.",
   "Non serve raccontare tutto. Basta dire: 'sono in un momento difficile, puoi restare?'.",
@@ -808,7 +808,7 @@ const quotes=[
   "Il sollievo vero non ti umilia dopo. Scegli un sollievo che ti lascia intera.",
   "La crisi non ha bisogno di una grande risposta. Ha bisogno di una risposta immediata e sicura.",
   "Non seguire il primo impulso. Aspetta il secondo pensiero: spesso è più libero.",
-  "Il disturbo vuole farti credere che sei sola. Usa un contatto reale per smentirlo.",
+  "La paura vuole farti credere che sei sola. Usa un contatto reale per smentirla.",
   "Respirare non risolve tutto, ma dà al cervello abbastanza ossigeno per non obbedire subito.",
   "Una mano sul petto, piedi a terra: il corpo ha bisogno di segnali di sicurezza, non di punizione.",
   "Non devi trasformare il panico in un gesto. Puoi trasformarlo in una richiesta di aiuto.",
@@ -820,7 +820,7 @@ const quotes=[
   "Se oggi riesci solo a rimandare, rimandare è abbastanza per adesso.",
   "La voce critica non merita il volante. Può parlare dal sedile dietro mentre tu guidi altrove.",
   "Metti distanza concreta: telefono carico, porta aperta, stanza comune, mani impegnate.",
-  "Il disturbo ama i piani vaghi. Tu usa azioni precise: timer 10, messaggio, acqua, luce.",
+  "L'impulso ama i piani vaghi. Tu usa azioni precise: timer 10, messaggio, acqua, luce.",
   "Non devi vincere con eleganza. Puoi vincere in modo disordinato: chiedendo aiuto, piangendo, restando.",
   "La ricaduta non comincia quando succede. Comincia quando resti sola con l'idea. Interrompila lì.",
   "Il pensiero 'me lo merito' è dolore travestito da sentenza. Non firmarla.",
@@ -834,14 +834,14 @@ const quotes=[
   "Se l'urgenza diventa comando, rendila attesa: timer, mani occupate, persona vicina.",
   "La tua sicurezza vale più della coerenza con un pensiero malato.",
   "Non serve una motivazione alta. Serve una barriera bassa: alzati e allontanati.",
-  "Se il disturbo ti dice di non disturbare nessuno, probabilmente è proprio il momento di disturbare.",
+  "Se la testa ti dice di non scrivere a nessuno, probabilmente è proprio il momento di scrivere.",
   "Un messaggio mandato male è meglio di una crisi vissuta da sola.",
   "Non sei obbligata a completare una sequenza solo perché è iniziata nella testa.",
   "La cura può essere interrompere l'azione più piccola prima dell'azione grande.",
   "Quando sei nel picco, semplifica il mondo: una stanza sicura, una persona, un timer.",
   "La parte sana può essere stanca e comunque scegliere una cosa protettiva.",
   "Non devi sentire speranza per comportarti in modo speranzoso per dieci minuti.",
-  "Il disturbo promette controllo e poi prende spazio. Oggi non cedergli altro spazio.",
+  "L'impulso promette controllo e poi prende spazio. Oggi non cedergli altro spazio.",
   "Se ti sembra impossibile, abbassa l'obiettivo: non fare il rituale per i prossimi 60 secondi.",
   "La crisi è un'onda, non una casa. Non costruirci dentro una decisione.",
   "Proteggerti ora è un gesto concreto verso la vita che dici di volere nei momenti lucidi.",
@@ -858,19 +858,55 @@ const quotes=[
   "La parte che ti protegge non è scomparsa. È quella che sta leggendo.",
   "Se il corpo trema, non significa pericolo: significa attivazione. Rispondi con sicurezza.",
   "Il rituale non merita segretezza. La tua sicurezza merita testimoni.",
-  "Ogni volta che chiedi aiuto prima del gesto, cambi la storia che il disturbo racconta.",
+  "Ogni volta che chiedi aiuto prima del gesto, cambi la storia che la paura racconta.",
   "Non sei in ritardo per scegliere diversamente. Sei esattamente nel punto in cui puoi farlo.",
   "Se hai solo il 5% di forza, usa il 5% per premere un tasto sicuro.",
   "Prima fermati, poi capirai. Non serve capire per fermarsi.",
   "L'impulso vuole farti correre. La tua uscita è rallentare abbastanza da non seguirlo.",
-  "Non devi combattere tutto il disturbo. Devi interrompere un passaggio della catena.",
+  "Non devi combattere tutto adesso. Devi interrompere un passaggio della catena.",
   "La promessa del rituale è immediata; il costo arriva dopo. Scegli guardando anche dopo.",
   "Tu sei responsabile di proteggerti, non di punirti per stare male.",
   "Se non sai qual è la scelta giusta, scegli quella che ti lascia più al sicuro tra dieci minuti."
 ];
-const QUOTE_QUEUE_KEY='supporto_quote_queue_v2';
-const QUOTE_LAST_KEY='supporto_quote_last_v2';
+const loveQuotes=[
+  "Sofia, resta qui con me un minuto. Ti amo.",
+  "Ti amo, Sofia. Facciamo passare questa onda insieme.",
+  "Sofia, non devi vincere da sola.",
+  "Amore, per me conti tu. Adesso scegliamo la cosa sicura.",
+  "Sofia, un minuto alla volta. Io sono qui.",
+  "Ti amo anche in questo momento difficile.",
+  "Sofia, non sei pesante. Sei importante.",
+  "Resta qui con me ancora dieci minuti, amore.",
+  "Sofia, respira piano. Io sono dalla tua parte.",
+  "Ti amo, Sofia. Prima sicurezza, poi tutto il resto.",
+  "Sofia, non devi essere perfetta per essere amata.",
+  "Amore mio, se oggi pesa tutto, appoggiati qui un secondo.",
+  "Sofia, io voglio te presente e al sicuro.",
+  "Ti amo. Non devi nasconderti da me.",
+  "Sofia, sei molto più grande di questo momento.",
+  "Ti amo Sofia, davvero.",
+  "Sofia, scegli la cosa che ti protegge. Io tifo per te.",
+  "Non sei sola, Sofia. Sono qui con te.",
+  "Sofia, sei la mia persona anche nei giorni difficili.",
+  "Ti amo. Restiamo nel prossimo minuto, non in tutta la giornata.",
+  "Sofia, sono fiero di ogni volta che ci provi.",
+  "Amore, anche questa passerà. Tu resta.",
+  "Sofia, se non hai forza usa la mia voce per un minuto.",
+  "Ti amo nei giorni facili e in quelli complicati.",
+  "Sofia, la tua vita vale più di questa urgenza.",
+  "Amore, non devi meritarti aiuto. Lo puoi usare adesso.",
+  "Sofia, apri una chat prima di restare sola con l'impulso.",
+  "Ti amo, Sofia. Non decidere nel picco.",
+  "Sofia, mi basta che tu faccia il prossimo passo, non tutti.",
+  "Amore, resta visibile. Non chiuderti proprio adesso."
+];
+const QUOTE_QUEUE_KEY='supporto_quote_queue_v3';
+const QUOTE_LAST_KEY='supporto_quote_last_v3';
+const LOVE_QUEUE_KEY='supporto_love_quote_queue_v1';
+const LOVE_LAST_KEY='supporto_love_quote_last_v1';
 let quoteQueue=[];
+let loveQuoteQueue=[];
+let quoteTapCount=0;
 function shuffleArray(arr){
   for(let i=arr.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
@@ -878,49 +914,58 @@ function shuffleArray(arr){
   }
   return arr;
 }
-function buildQuoteQueue(avoidIndex){
-  const queue=shuffleArray(quotes.map((_,i)=>i));
+function buildIndexQueue(source,avoidIndex){
+  const queue=shuffleArray(source.map((_,i)=>i));
   if(queue.length>1&&queue[0]===avoidIndex){
     const swapIndex=queue.findIndex(i=>i!==avoidIndex);
     if(swapIndex>0)[queue[0],queue[swapIndex]]=[queue[swapIndex],queue[0]];
   }
   return queue;
 }
-function loadQuoteQueue(){
+function loadIndexQueue(key,source){
   try{
-    const saved=JSON.parse(localStorage.getItem(QUOTE_QUEUE_KEY)||'[]');
-    if(Array.isArray(saved))quoteQueue=saved.filter(i=>Number.isInteger(i)&&i>=0&&i<quotes.length);
-  }catch(e){quoteQueue=[];}
+    const saved=JSON.parse(localStorage.getItem(key)||'[]');
+    if(Array.isArray(saved))return saved.filter(i=>Number.isInteger(i)&&i>=0&&i<source.length);
+  }catch(e){}
+  return [];
 }
-function saveQuoteQueue(){
-  try{localStorage.setItem(QUOTE_QUEUE_KEY,JSON.stringify(quoteQueue));}catch(e){}
+function saveIndexQueue(key,queue){try{localStorage.setItem(key,JSON.stringify(queue));}catch(e){}}
+function lastIndex(key){
+  try{const n=parseInt(localStorage.getItem(key)||'-1',10);return Number.isFinite(n)?n:-1;}catch(e){return -1;}
 }
-function lastQuoteIndex(){
-  try{const n=parseInt(localStorage.getItem(QUOTE_LAST_KEY)||'-1',10);return Number.isFinite(n)?n:-1;}catch(e){return -1;}
+function nextFromDeck(source,state){
+  if(!state.queue.length)state.queue=loadIndexQueue(state.queueKey,source);
+  if(!state.queue.length)state.queue=buildIndexQueue(source,lastIndex(state.lastKey));
+  const i=state.queue.shift();
+  saveIndexQueue(state.queueKey,state.queue);
+  try{localStorage.setItem(state.lastKey,String(i));}catch(e){}
+  return source[i];
 }
-function nextQuoteIndex(){
-  if(!quoteQueue.length)loadQuoteQueue();
-  if(!quoteQueue.length)quoteQueue=buildQuoteQueue(lastQuoteIndex());
-  const i=quoteQueue.shift();
-  saveQuoteQueue();
-  try{localStorage.setItem(QUOTE_LAST_KEY,String(i));}catch(e){}
-  return i;
+function shouldUseLoveQuote(){
+  quoteTapCount++;
+  return loveQuotes.length&&(quoteTapCount%3===0||Math.random()<0.22);
 }
 function newQuote(){
   const el=document.getElementById('quote-text');
   if(!el)return;
-  const i=nextQuoteIndex();
+  const useLove=shouldUseLoveQuote();
+  const text=useLove
+    ?nextFromDeck(loveQuotes,{queue:loveQuoteQueue,queueKey:LOVE_QUEUE_KEY,lastKey:LOVE_LAST_KEY})
+    :nextFromDeck(quotes,{queue:quoteQueue,queueKey:QUOTE_QUEUE_KEY,lastKey:QUOTE_LAST_KEY});
+  if(useLove)loveQuoteQueue=loadIndexQueue(LOVE_QUEUE_KEY,loveQuotes);
+  else quoteQueue=loadIndexQueue(QUOTE_QUEUE_KEY,quotes);
   el.classList.remove('quote-changing');
   void el.offsetWidth;
-  el.textContent='"'+quotes[i]+'"';
+  el.textContent='"'+text+'"';
   el.classList.add('quote-changing');
 }
 
+
 const TAB_META={
-  'tab-home':['Supporto','Spazio sicuro'],
-  'tab-stop':['Ferma','Modalità emergenza'],
-  'tab-diary':['Diario','Calendario eventi'],
-  'tab-progress':['Progressi','Bosco e badge'],
+  'tab-home':['Sofia','Ti amo. Sono qui.'],
+  'tab-stop':['Ferma','Sofia, un minuto alla volta'],
+  'tab-diary':['Diario di Sofia','Calendario eventi'],
+  'tab-progress':['Progressi di Sofia','Bosco e badge'],
   'tab-help':['Aiuto','Mario · 338 218 8083']
 };
 const TAB_ORDER=['tab-home','tab-stop','tab-diary','tab-progress','tab-help'];
