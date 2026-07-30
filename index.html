@@ -43,6 +43,10 @@ body{
 button,a,[onclick]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 button{font:inherit}
 button,a{cursor:pointer}
+button,a,.sense-item,[onclick]{transition:transform .18s cubic-bezier(.22,1,.36,1),opacity .18s ease,filter .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease}
+.is-pressing{transform:scale(.965)!important;filter:brightness(.985) saturate(1.04)}
+.tap-confirm{animation:tapConfirm .34s cubic-bezier(.22,1,.36,1)}
+@keyframes tapConfirm{0%{transform:scale(.965)}55%{transform:scale(1.018)}100%{transform:scale(1)}}
 a{text-decoration:none;color:inherit}
 body::before{
   content:"";position:fixed;z-index:15;top:0;left:0;right:0;height:calc(76px + env(safe-area-inset-top));
@@ -112,8 +116,12 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .sos-big svg{width:34px;height:34px;filter:drop-shadow(0 2px 5px rgba(120,0,40,.18))}
 .sos-sub{text-align:center;font-size:13px;color:var(--text3);margin:12px 0 0}
 .quote-box{text-align:center;background:linear-gradient(145deg,var(--surface),rgba(255,240,246,.72))}
-.quote-text{font-size:17px;font-weight:750;line-height:1.48;font-style:italic;letter-spacing:-.15px}
-.quote-refresh{margin-top:6px;font-size:13px;color:var(--pink);background:rgba(255,90,138,.10);border:none;border-radius:999px;padding:8px 12px;font-weight:700}
+.quote-button{width:100%;appearance:none;-webkit-appearance:none;color:var(--text);display:block}
+.quote-button:focus-visible{outline:3px solid rgba(255,90,138,.28);outline-offset:3px}
+.quote-text{font-size:17px;font-weight:750;line-height:1.48;font-style:italic;letter-spacing:-.15px;min-height:76px;display:flex;align-items:center;justify-content:center}
+.quote-text.quote-changing{animation:quoteSwap .34s cubic-bezier(.22,1,.36,1)}
+.quote-hint{margin-top:10px;font-size:12px;color:var(--pink);font-weight:850;letter-spacing:.1px;background:rgba(255,90,138,.10);border-radius:999px;padding:8px 12px;display:inline-flex}
+@keyframes quoteSwap{0%{opacity:0;transform:translate3d(0,8px,0) scale(.985)}100%{opacity:1;transform:translate3d(0,0,0) scale(1)}}
 
 .timer-wrap{display:flex;flex-direction:column;align-items:center;padding:8px 0}
 .timer-svg{width:168px;height:168px;filter:drop-shadow(0 12px 20px rgba(255,90,138,.12))}
@@ -237,10 +245,10 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
     </button>
     <p class="sos-sub">Ti porta direttamente nel tab Ferma.</p>
   </div>
-  <div class="quote-box">
+  <button class="quote-box quote-button" type="button" onclick="newQuote()" aria-label="Nuova frase di supporto">
     <div class="quote-text" id="quote-text">"Non trattare l'urgenza come un ordine. È un segnale, non un comando."</div>
-    <button class="quote-refresh" onclick="newQuote()">↻ Cambia frase</button>
-  </div>
+    <div class="quote-hint">Tocca la frase per cambiarla</div>
+  </button>
 </div>
 
 <!-- STOP -->
@@ -513,14 +521,160 @@ const quotes=[
   "La vergogna parla al passato. La scelta che fai ora appartiene al presente.",
   "Non sei sola contro tutto. Hai strumenti: timer, diario, Mario, respiro, distanza.",
   "La parte che vuole il gesto promette fine. La parte che resiste costruisce futuro.",
-  "Resta qui abbastanza a lungo da vedere l'onda cambiare forma."
+  "Resta qui abbastanza a lungo da vedere l'onda cambiare forma.",
+  "Non aspettare che passi la paura per proteggerti. Proteggerti è il modo in cui la paura scende.",
+  "Se stai andando verso il rituale, cambia direzione fisicamente: un metro basta per iniziare.",
+  "La mente sta cercando una scorciatoia. Tu scegli la strada che domani non ti farà male.",
+  "Prima di obbedire all'impulso, fai una telefonata. Non decidere in silenzio.",
+  "Il picco è rumoroso ma temporaneo. Tu sei più lunga di questo picco.",
+  "Fai una cosa incompatibile con il rituale per 90 secondi: mani occupate, voce di qualcuno, stanza aperta.",
+  "Non devi essere convinta. Devi solo non chiudere la porta alla parte che vuole stare meglio.",
+  "Quando l'urgenza stringe, riduci il compito: non guarire adesso, solo non farti male adesso.",
+  "Il disturbo vuole farti credere che il gesto sia inevitabile. Il ritardo dimostra che non lo è.",
+  "Se senti vergogna, nomina il fatto senza giudizio: 'sto avendo un impulso'. Non sei l'impulso.",
+  "Il momento più pericoloso è quello automatico. Qualsiasi pausa è un'interruzione utile.",
+  "Scegli un'azione che il disturbo odia: luce accesa, telefono in mano, qualcuno avvisato.",
+  "Non cercare di vincere nella testa. Vinci con i piedi: spostati, esci, cambia stanza.",
+  "Ogni minuto senza seguire il rituale è un minuto in cui il cervello impara un'uscita nuova.",
+  "Se il pensiero dice 'devo', prova a sostituirlo con 'sto avendo l'impulso di'. Cambia distanza.",
+  "Non devi sistemare il corpo. Devi mettere al sicuro la persona che vive in quel corpo.",
+  "La cura adesso è pratica: timer, acqua, messaggio, distanza dal rischio.",
+  "Il desiderio di sparire spesso è bisogno di essere vista senza giudizio. Scrivi a qualcuno.",
+  "Non lasciare che una sensazione intensa firmi un contratto al posto tuo.",
+  "Il tuo sistema nervoso è acceso. Spegnerlo con il rituale lo riaccende dopo. Cerca sicurezza, non punizione.",
+  "Se hai già iniziato la sequenza, puoi comunque interromperla. Non esiste 'troppo tardi' per fermarsi.",
+  "La scelta più protettiva può sembrare noiosa: aspettare, bere, chiamare, respirare.",
+  "Il disturbo ti isola prima di colpirti. Rompi l'isolamento prima di discutere con lui.",
+  "Se non riesci a volerti bene, comportati come se stessi proteggendo una persona cara.",
+  "L'urgenza non chiede consenso, chiede reazione. Tu puoi rallentare abbastanza da scegliere.",
+  "Non serve raccontare tutto. Basta dire: 'sono in un momento difficile, puoi restare?'.",
+  "Tieni il telefono in mano e allontanati dal posto del rituale. Prima movimento, poi pensiero.",
+  "Il dolore vuole una fine veloce. Tu puoi offrirgli una fine meno distruttiva.",
+  "Se la testa dice 'non cambia niente', rispondi con un fatto: un minuto diverso cambia la catena.",
+  "Non devi avere una giornata buona per fare una scelta buona.",
+  "Fai meno: meno segretezza, meno velocità, meno isolamento. Basta questo per cambiare traiettoria.",
+  "Il rituale sembra controllo perché è conosciuto. La libertà all'inizio sembra instabile.",
+  "Non punirti per il bisogno di sollievo. Cerca sollievo che non ti chieda il conto dopo.",
+  "Il pensiero può sembrare urgente perché è ripetuto, non perché è vero.",
+  "Quando non sai cosa fare, scegli la cosa che aumenta la sicurezza, non quella che aumenta la vergogna.",
+  "Non devi dimostrare forza. Devi creare condizioni in cui sia più facile resistere.",
+  "Aprire questa app è già un cambio di direzione. Continua con il prossimo passo.",
+  "La parte malata parla in assoluti: sempre, mai, tutto, niente. Tu resta nel concreto: 10 minuti.",
+  "Se l'impulso è una porta, non metterti davanti alla maniglia. Cambia stanza.",
+  "Non restare nel luogo dove la crisi si ripete. Il corpo ricorda i posti: spostalo.",
+  "La guarigione non è una frase bella. È fare una cosa diversa quando nessuno guarda.",
+  "Il tuo cervello sta proponendo una vecchia soluzione a un dolore nuovo. Puoi rifiutare la proposta.",
+  "Prima di agire, rallenta il contesto: siediti dove non puoi fare il rituale e scrivi a qualcuno.",
+  "Se senti 'ormai', fermati: 'ormai' è il trucco che trasforma un pensiero in una ricaduta.",
+  "Il sollievo vero non ti umilia dopo. Scegli un sollievo che ti lascia intera.",
+  "La crisi non ha bisogno di una grande risposta. Ha bisogno di una risposta immediata e sicura.",
+  "Non seguire il primo impulso. Aspetta il secondo pensiero: spesso è più libero.",
+  "Il disturbo vuole farti credere che sei sola. Usa un contatto reale per smentirlo.",
+  "Respirare non risolve tutto, ma dà al cervello abbastanza ossigeno per non obbedire subito.",
+  "Una mano sul petto, piedi a terra: il corpo ha bisogno di segnali di sicurezza, non di punizione.",
+  "Non devi trasformare il panico in un gesto. Puoi trasformarlo in una richiesta di aiuto.",
+  "Se il rischio è alto, niente trattative: chiama, esci, resta visibile.",
+  "La parte che vuole cedere cerca privacy. La parte che vuole vivere cerca presenza.",
+  "Non scegliere nel bagno, non scegliere da sola, non scegliere nel picco.",
+  "Ogni rituale inizia prima del gesto. Fermati a uno dei passaggi precedenti.",
+  "Il corpo può sentirsi sbagliato senza essere sbagliato. Una sensazione non è una prova.",
+  "Se oggi riesci solo a rimandare, rimandare è abbastanza per adesso.",
+  "La voce critica non merita il volante. Può parlare dal sedile dietro mentre tu guidi altrove.",
+  "Metti distanza concreta: telefono carico, porta aperta, stanza comune, mani impegnate.",
+  "Il disturbo ama i piani vaghi. Tu usa azioni precise: timer 10, messaggio, acqua, luce.",
+  "Non devi vincere con eleganza. Puoi vincere in modo disordinato: chiedendo aiuto, piangendo, restando.",
+  "La ricaduta non comincia quando succede. Comincia quando resti sola con l'idea. Interrompila lì.",
+  "Il pensiero 'me lo merito' è dolore travestito da sentenza. Non firmarla.",
+  "Non c'è niente da risolvere nel corpo nei prossimi 10 minuti. C'è da proteggere una persona.",
+  "Se stai per chiuderti, apri qualcosa: una porta, una chat, una finestra, una chiamata.",
+  "Lascia che la frase sia semplice: 'Non voglio stare sola adesso'. È sufficiente.",
+  "L'ansia vuole certezza. Tu puoi darle procedura: faccio questo, poi rivaluto.",
+  "Quando l'impulso promette pace, chiediti quanto è durata l'ultima volta.",
+  "Il cervello ricorda quello che ripeti. Oggi ripeti una micro-interruzione.",
+  "Non devi fidarti di te al 100%. Devi togliere al gesto le condizioni facili.",
+  "Se l'urgenza diventa comando, rendila attesa: timer, mani occupate, persona vicina.",
+  "La tua sicurezza vale più della coerenza con un pensiero malato.",
+  "Non serve una motivazione alta. Serve una barriera bassa: alzati e allontanati.",
+  "Se il disturbo ti dice di non disturbare nessuno, probabilmente è proprio il momento di disturbare.",
+  "Un messaggio mandato male è meglio di una crisi vissuta da sola.",
+  "Non sei obbligata a completare una sequenza solo perché è iniziata nella testa.",
+  "La cura può essere interrompere l'azione più piccola prima dell'azione grande.",
+  "Quando sei nel picco, semplifica il mondo: una stanza sicura, una persona, un timer.",
+  "La parte sana può essere stanca e comunque scegliere una cosa protettiva.",
+  "Non devi sentire speranza per comportarti in modo speranzoso per dieci minuti.",
+  "Il disturbo promette controllo e poi prende spazio. Oggi non cedergli altro spazio.",
+  "Se ti sembra impossibile, abbassa l'obiettivo: non fare il rituale per i prossimi 60 secondi.",
+  "La crisi è un'onda, non una casa. Non costruirci dentro una decisione.",
+  "Proteggerti ora è un gesto concreto verso la vita che dici di volere nei momenti lucidi.",
+  "Non lasciare che la vergogna scelga il piano. La vergogna sceglie sempre isolamento.",
+  "Il tuo corpo ha bisogno di alleanza, non di guerra. Fai una cosa che riduce la guerra.",
+  "Se non riesci a parlare, manda un punto, un cuore, qualsiasi segnale. Il contatto conta.",
+  "L'impulso chiede obbedienza immediata. Tu dagli una risposta amministrativa: richiesta ricevuta, valutiamo dopo.",
+  "Non c'è urgenza che vieti di bere un bicchiere d'acqua prima.",
+  "Non devi spegnere tutto. Devi abbassare abbastanza il volume per scegliere.",
+  "Questa app non deve convincerti. Deve farti guadagnare tempo. Premi, respira, resta.",
+  "Se la giornata è già difficile, non renderla più dura con una punizione.",
+  "La scelta libera spesso è quella meno automatica, non quella più facile.",
+  "Non trasformare una sensazione in un ordine. Aspetta che torni sensazione e basta.",
+  "La parte che ti protegge non è scomparsa. È quella che sta leggendo.",
+  "Se il corpo trema, non significa pericolo: significa attivazione. Rispondi con sicurezza.",
+  "Il rituale non merita segretezza. La tua sicurezza merita testimoni.",
+  "Ogni volta che chiedi aiuto prima del gesto, cambi la storia che il disturbo racconta.",
+  "Non sei in ritardo per scegliere diversamente. Sei esattamente nel punto in cui puoi farlo.",
+  "Se hai solo il 5% di forza, usa il 5% per premere un tasto sicuro.",
+  "Prima fermati, poi capirai. Non serve capire per fermarsi.",
+  "L'impulso vuole farti correre. La tua uscita è rallentare abbastanza da non seguirlo.",
+  "Non devi combattere tutto il disturbo. Devi interrompere un passaggio della catena.",
+  "La promessa del rituale è immediata; il costo arriva dopo. Scegli guardando anche dopo.",
+  "Tu sei responsabile di proteggerti, non di punirti per stare male.",
+  "Se non sai qual è la scelta giusta, scegli quella che ti lascia più al sicuro tra dieci minuti."
 ];
-let lastQuoteIndex=-1;
+const QUOTE_QUEUE_KEY='supporto_quote_queue_v2';
+const QUOTE_LAST_KEY='supporto_quote_last_v2';
+let quoteQueue=[];
+function shuffleArray(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+function buildQuoteQueue(avoidIndex){
+  const queue=shuffleArray(quotes.map((_,i)=>i));
+  if(queue.length>1&&queue[0]===avoidIndex){
+    const swapIndex=queue.findIndex(i=>i!==avoidIndex);
+    if(swapIndex>0)[queue[0],queue[swapIndex]]=[queue[swapIndex],queue[0]];
+  }
+  return queue;
+}
+function loadQuoteQueue(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(QUOTE_QUEUE_KEY)||'[]');
+    if(Array.isArray(saved))quoteQueue=saved.filter(i=>Number.isInteger(i)&&i>=0&&i<quotes.length);
+  }catch(e){quoteQueue=[];}
+}
+function saveQuoteQueue(){
+  try{localStorage.setItem(QUOTE_QUEUE_KEY,JSON.stringify(quoteQueue));}catch(e){}
+}
+function lastQuoteIndex(){
+  try{const n=parseInt(localStorage.getItem(QUOTE_LAST_KEY)||'-1',10);return Number.isFinite(n)?n:-1;}catch(e){return -1;}
+}
+function nextQuoteIndex(){
+  if(!quoteQueue.length)loadQuoteQueue();
+  if(!quoteQueue.length)quoteQueue=buildQuoteQueue(lastQuoteIndex());
+  const i=quoteQueue.shift();
+  saveQuoteQueue();
+  try{localStorage.setItem(QUOTE_LAST_KEY,String(i));}catch(e){}
+  return i;
+}
 function newQuote(){
-  let i=Math.floor(Math.random()*quotes.length);
-  if(quotes.length>1){while(i===lastQuoteIndex)i=Math.floor(Math.random()*quotes.length);}
-  lastQuoteIndex=i;
-  document.getElementById('quote-text').textContent='"'+quotes[i]+'"';
+  const el=document.getElementById('quote-text');
+  if(!el)return;
+  const i=nextQuoteIndex();
+  el.classList.remove('quote-changing');
+  void el.offsetWidth;
+  el.textContent='"'+quotes[i]+'"';
+  el.classList.add('quote-changing');
 }
 
 const TAB_META={
@@ -822,7 +976,30 @@ function renderEntries(){
 }
 
 
-loadData();updateStats();renderCalendar();renderEntries();newQuote();updateAppHeader('tab-home');setupSwipeNavigation();
+function setupTapAnimations(){
+  const selector='button,a,.sense-item,[onclick]';
+  let pressed=null;
+  function pick(target){return target&&target.closest?target.closest(selector):null;}
+  function canAnimate(el){return el&&!el.disabled&&!el.classList.contains('tab')&&!el.classList.contains('breath-circle');}
+  function clear(){if(pressed){pressed.classList.remove('is-pressing');pressed=null;}}
+  document.addEventListener('pointerdown',e=>{
+    const el=pick(e.target);
+    if(!canAnimate(el))return;
+    pressed=el;
+    el.classList.add('is-pressing');
+  },{passive:true});
+  ['pointerup','pointercancel','pointerleave'].forEach(type=>document.addEventListener(type,clear,{passive:true}));
+  document.addEventListener('click',e=>{
+    const el=pick(e.target);
+    if(!canAnimate(el))return;
+    el.classList.remove('tap-confirm');
+    void el.offsetWidth;
+    el.classList.add('tap-confirm');
+    setTimeout(()=>el.classList.remove('tap-confirm'),380);
+  },true);
+}
+
+loadData();updateStats();renderCalendar();renderEntries();newQuote();updateAppHeader('tab-home');setupSwipeNavigation();setupTapAnimations();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
 </script>
 </body>
