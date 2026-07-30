@@ -47,7 +47,23 @@ button,a,.sense-item,[onclick]{transition:transform .18s cubic-bezier(.22,1,.36,
 .is-pressing{transform:scale(.965)!important;filter:brightness(.985) saturate(1.04)}
 .tap-confirm{animation:tapConfirm .34s cubic-bezier(.22,1,.36,1)}
 @keyframes tapConfirm{0%{transform:scale(.965)}55%{transform:scale(1.018)}100%{transform:scale(1)}}
+body,input,button,textarea,select{-webkit-user-select:none;user-select:none}
 a{text-decoration:none;color:inherit}
+.app-loader{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff6fa,#ffe4ef);transition:opacity .42s ease,transform .42s ease;pointer-events:auto}
+.app-loader.hide{opacity:0;transform:scale(1.015);pointer-events:none}
+.loader-card{display:flex;flex-direction:column;align-items:center;gap:12px;animation:loaderIn .55s cubic-bezier(.22,1,.36,1) both}
+.loader-card img{width:84px;height:84px;border-radius:24px;box-shadow:0 18px 42px rgba(255,90,138,.24)}
+.loader-title{font-weight:900;font-size:20px;letter-spacing:-.35px;color:var(--text)}
+.loader-subtitle{font-size:13px;font-weight:750;color:var(--text3)}
+@keyframes loaderIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.toast-host{position:fixed;left:50%;bottom:calc(94px + env(safe-area-inset-bottom));z-index:90;width:min(390px,calc(100% - 28px));transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{align-self:center;max-width:100%;display:flex;align-items:center;gap:9px;padding:12px 14px;border-radius:18px;background:rgba(31,23,32,.94);color:#fff;font-size:14px;font-weight:850;line-height:1.25;box-shadow:0 16px 38px rgba(31,23,32,.28);animation:toastIn .34s cubic-bezier(.22,1,.36,1) both}
+.toast.success{background:rgba(20,128,61,.94)}.toast.error{background:rgba(220,38,38,.94)}
+.toast.leaving{animation:toastOut .22s ease both}
+.toast-icon{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:12px}
+@keyframes toastIn{from{opacity:0;transform:translate3d(0,18px,0) scale(.96)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+@keyframes toastOut{to{opacity:0;transform:translate3d(0,10px,0) scale(.98)}}
+@media(prefers-color-scheme:dark){.app-loader{background:linear-gradient(180deg,#181116,#2b1b26)}}
 body::before{
   content:"";position:fixed;z-index:15;top:0;left:0;right:0;height:calc(76px + env(safe-area-inset-top));
   background:linear-gradient(180deg,rgba(255,246,250,.96),rgba(255,246,250,.78) 62%,rgba(255,246,250,0));
@@ -170,11 +186,12 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .event-btn:active{transform:scale(.98)}
 .event-btn.selected{border-color:rgba(255,90,138,.56);background:linear-gradient(135deg,rgba(255,90,138,.16),rgba(255,143,189,.10));box-shadow:0 12px 22px rgba(255,90,138,.14)}
 .event-dot,.entry-dot{width:12px;height:12px;border-radius:50%;display:inline-block;flex-shrink:0;box-shadow:0 0 0 4px rgba(255,255,255,.68)}
-.dot-urge{background:var(--danger)}.dot-binge{background:var(--purple)}.dot-purge{background:var(--orange)}.dot-restrict{background:var(--blue)}.dot-compensate{background:#ffcc00}.dot-meal{background:var(--positive)}.dot-resisted{background:#30d158}.dot-help{background:#25d366}.dot-custom{background:var(--gray)}
+.dot-overeaten{background:var(--purple)}.dot-purge{background:var(--orange)}.dot-resisted{background:#30d158}.dot-custom{background:var(--gray)}
 .intensity-row{display:flex;gap:6px;margin-bottom:9px}
 .intensity-btn{flex:1;padding:10px 0;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.62);color:var(--text);font-size:15px;font-weight:850;transition:all .15s;box-shadow:0 5px 12px rgba(31,23,32,.035)}
 .intensity-btn.selected{background:linear-gradient(135deg,var(--pink),var(--pink2));color:#fff;border-color:transparent;box-shadow:0 10px 20px rgba(255,90,138,.20)}
 .diary-save{width:100%;padding:15px;border:none;border-radius:18px;background:linear-gradient(135deg,var(--text),#3b2c37);color:#fff;font-weight:850;font-size:16px;margin-top:7px;box-shadow:0 12px 24px rgba(31,23,32,.16)}
+.diary-cancel{width:100%;padding:13px;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.58);color:var(--text2);font-weight:850;font-size:15px;margin-top:9px}
 
 .stats-bar{display:flex;gap:9px;margin-bottom:14px}
 .stat-box{flex:1;text-align:center;padding:14px 8px;border:1px solid var(--border);border-radius:20px;background:var(--surface);box-shadow:var(--soft-shadow)}
@@ -206,6 +223,9 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 .entry-time{font-size:12px;color:var(--text3);font-weight:750;text-transform:capitalize}
 .entry-mood{font-weight:850;font-size:15px;margin-top:3px;letter-spacing:-.15px}
 .entry-pill{font-size:12px;font-weight:850;color:var(--pink);background:rgba(255,90,138,.10);padding:6px 8px;border-radius:999px;white-space:nowrap}
+.entry-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.entry-actions button{border:0;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900;background:rgba(255,90,138,.10);color:var(--pink)}
+.entry-actions button.danger{background:rgba(255,59,95,.11);color:var(--danger)}
 
 .contact-big{display:flex;align-items:center;justify-content:space-between;padding:18px;gap:12px}
 .contact-info .contact-name{font-weight:850;font-size:18px}
@@ -217,6 +237,14 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 </style>
 </head>
 <body>
+<div class="app-loader" id="app-loader" aria-hidden="true">
+  <div class="loader-card">
+    <img src="icon.png" alt="">
+    <div class="loader-title">Supporto</div>
+    <div class="loader-subtitle">Uno spazio sicuro</div>
+  </div>
+</div>
+<div class="toast-host" id="toast-host" aria-live="polite" aria-atomic="true"></div>
 <header class="app-header">
   <div class="app-header-inner">
     <div class="app-brand">
@@ -329,14 +357,9 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
   <div class="card">
     <label class="diary-label">Registra evento</label>
     <div class="event-grid" id="event-types">
-      <button class="event-btn" data-event="urge" onclick="selectEvent(this,'urge')"><span class="event-dot dot-urge"></span><span>Impulso forte</span></button>
-      <button class="event-btn" data-event="binge" onclick="selectEvent(this,'binge')"><span class="event-dot dot-binge"></span><span>Abbuffata</span></button>
+      <button class="event-btn" data-event="overeaten" onclick="selectEvent(this,'overeaten')"><span class="event-dot dot-overeaten"></span><span>Mangiato troppo</span></button>
       <button class="event-btn" data-event="purge" onclick="selectEvent(this,'purge')"><span class="event-dot dot-purge"></span><span>Vomito</span></button>
-      <button class="event-btn" data-event="restrict" onclick="selectEvent(this,'restrict')"><span class="event-dot dot-restrict"></span><span>Restrizione</span></button>
-      <button class="event-btn" data-event="compensate" onclick="selectEvent(this,'compensate')"><span class="event-dot dot-compensate"></span><span>Compensazione</span></button>
-      <button class="event-btn" data-event="meal" onclick="selectEvent(this,'meal')"><span class="event-dot dot-meal"></span><span>Pasto regolare</span></button>
-      <button class="event-btn" data-event="resisted" onclick="selectEvent(this,'resisted')"><span class="event-dot dot-resisted"></span><span>Ho resistito</span></button>
-      <button class="event-btn" data-event="help" onclick="selectEvent(this,'help')"><span class="event-dot dot-help"></span><span>Aiuto chiesto</span></button>
+      <button class="event-btn" data-event="resisted" onclick="selectEvent(this,'resisted')"><span class="event-dot dot-resisted"></span><span>Resistito</span></button>
     </div>
 
     <label class="diary-label">Intensità</label>
@@ -354,7 +377,8 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
       <button class="intensity-btn" onclick="selectInt(this,9)">9</button>
       <button class="intensity-btn" onclick="selectInt(this,10)">10</button>
     </div>
-    <button class="diary-save" onclick="saveEntry()">Registra nel calendario</button>
+    <button class="diary-save" id="diary-save-btn" onclick="saveEntry()">Registra nel calendario</button>
+    <button class="diary-cancel hidden" id="diary-cancel-btn" onclick="cancelEdit()">Annulla modifica</button>
   </div>
 
   <div class="card calendar-card">
@@ -419,6 +443,29 @@ p{font-size:16px;line-height:24px;color:var(--text2);margin-bottom:12px}
 </div>
 
 <script>
+function haptic(strength='light'){
+  try{
+    if(!('vibrate' in navigator))return;
+    navigator.vibrate(strength==='success'?[10,30,10]:strength==='error'?[20,35,20]:8);
+  }catch(e){}
+}
+function showToast(message,type='info'){
+  const host=document.getElementById('toast-host');
+  if(!host)return;
+  const toast=document.createElement('div');
+  toast.className='toast '+type;
+  const icon=type==='success'?'✓':type==='error'?'!':'•';
+  toast.innerHTML='<span class="toast-icon">'+icon+'</span><span>'+message+'</span>';
+  host.appendChild(toast);
+  haptic(type);
+  setTimeout(()=>{toast.classList.add('leaving');setTimeout(()=>toast.remove(),240);},2600);
+}
+function setupAppShell(){
+  const standalone=window.navigator.standalone||window.matchMedia('(display-mode: standalone)').matches;
+  document.body.classList.toggle('standalone',!!standalone);
+  const loader=document.getElementById('app-loader');
+  if(loader){setTimeout(()=>{loader.classList.add('hide');setTimeout(()=>loader.remove(),520);},520);}
+}
 const quotes=[
   "Non trattare l'urgenza come un ordine. È un segnale, non un comando.",
   "Per i prossimi 10 minuti l'unico obiettivo è non restare da sola con l'impulso.",
@@ -834,26 +881,22 @@ function toggleBreath(){
   }
 }
 
-function toggleSense(el){el.classList.toggle('done');}
-function markDone(btn){btn.classList.toggle('done');}
+function toggleSense(el){el.classList.toggle('done');haptic('light');}
+function markDone(btn){btn.classList.toggle('done');haptic('light');}
 
 const EVENT_TYPES=[
-  {id:'urge',label:'Impulso forte',color:'#ff3b5f'},
-  {id:'binge',label:'Abbuffata',color:'#af52de'},
+  {id:'overeaten',label:'Mangiato troppo',color:'#af52de'},
   {id:'purge',label:'Vomito',color:'#ff9f0a'},
-  {id:'restrict',label:'Restrizione',color:'#5ac8fa'},
-  {id:'compensate',label:'Compensazione',color:'#ffcc00'},
-  {id:'meal',label:'Pasto regolare',color:'#34c759'},
-  {id:'resisted',label:'Ho resistito',color:'#30d158'},
-  {id:'help',label:'Aiuto chiesto',color:'#25d366'},
+  {id:'resisted',label:'Resistito',color:'#30d158'},
   {id:'custom',label:'Evento',color:'#8e8e93'}
 ];
 const eventMap={};EVENT_TYPES.forEach(e=>eventMap[e.id]=e);
-let wins=0,entries=[],selectedEvent='',selectedInt=0,calendarDate=new Date(),selectedDay=isoDate(new Date());
+let wins=0,entries=[],selectedEvent='',selectedInt=0,editingEntryId='',calendarDate=new Date(),selectedDay=isoDate(new Date());
 
 function pad(n){return String(n).padStart(2,'0');}
 function isoDate(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
 function monthKey(d){return d.getFullYear()+'-'+pad(d.getMonth()+1);}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
 function entryDay(en){
   if(en.day)return en.day;
   if(en.date){const d=new Date(en.date);if(!isNaN(d))return isoDate(d);}
@@ -874,14 +917,17 @@ function entryDateLabel(day){
 function normalizeEntry(en){
   if(!en||typeof en!=='object')return null;
   let type=en.type;
+  if(type==='binge')type='overeaten';
   if(!type&&en.mood==='✓ Resistito')type='resisted';
   if(!type&&en.mood)type='custom';
   type=type||'custom';
   const cfg=eventMap[type]||eventMap.custom;
+  const label=en.event||en.label||(en.mood==='✓ Resistito'?'Resistito':en.mood)||cfg.label;
   return {
     ...en,
+    id:en.id||uid(),
     type,
-    event:en.event||en.label||(en.mood==='✓ Resistito'?'Ho resistito':en.mood)||cfg.label,
+    event:type==='custom'?label:cfg.label,
     intensity:en.intensity||'—',
     day:entryDay(en),
     date:en.date||new Date().toISOString(),
@@ -895,8 +941,10 @@ function loadData(){
     entries=Array.isArray(d.entries)?d.entries.map(normalizeEntry).filter(Boolean):[];
   }catch(e){entries=[];wins=0;}
 }
-function saveData(){localStorage.setItem('dca_data',JSON.stringify({wins,entries}));}
+function recomputeWins(){wins=entries.filter(en=>en.type==='resisted').length;}
+function saveData(){recomputeWins();localStorage.setItem('dca_data',JSON.stringify({wins,entries}));}
 function updateStats(){
+  recomputeWins();
   document.getElementById('stat-wins').textContent=wins;
   document.getElementById('stat-entries').textContent=entries.length;
   const current=monthKey(calendarDate);
@@ -914,28 +962,67 @@ function selectInt(btn,n){
   btn.classList.add('selected');
   selectedInt=n;
 }
+function setEntryForm(type,intensity){
+  selectedEvent=type||'';selectedInt=intensity&&intensity!=='—'?parseInt(intensity,10):0;
+  document.querySelectorAll('#event-types .event-btn').forEach(b=>b.classList.toggle('selected',b.dataset.event===selectedEvent));
+  document.querySelectorAll('.intensity-btn').forEach(b=>b.classList.toggle('selected',parseInt(b.textContent,10)===selectedInt));
+}
+function resetEntryForm(){
+  editingEntryId='';selectedEvent='';selectedInt=0;
+  document.querySelectorAll('#event-types .event-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.intensity-btn').forEach(b=>b.classList.remove('selected'));
+  const saveBtn=document.getElementById('diary-save-btn'),cancelBtn=document.getElementById('diary-cancel-btn');
+  if(saveBtn)saveBtn.textContent='Registra nel calendario';
+  if(cancelBtn)cancelBtn.classList.add('hidden');
+}
+function cancelEdit(){resetEntryForm();showToast('Modifica annullata');}
 function addEvent(type,intensity){
   const now=new Date();
   const cfg=eventMap[type]||eventMap.custom;
-  entries.unshift({type,event:cfg.label,intensity:intensity||'—',day:isoDate(now),date:now.toISOString(),time:now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})});
+  entries.unshift({id:uid(),type,event:cfg.label,intensity:intensity||'—',day:isoDate(now),date:now.toISOString(),time:now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})});
   selectedDay=isoDate(now);
   calendarDate=new Date(now.getFullYear(),now.getMonth(),1);
   saveData();updateStats();renderCalendar();renderEntries();
 }
 function saveEntry(){
-  if(!selectedEvent){alert('Seleziona un evento');return;}
-  if(!selectedInt){alert("Seleziona l'intensità");return;}
-  if(selectedEvent==='resisted')wins++;
+  if(!selectedEvent){showToast('Seleziona un evento','error');return;}
+  if(!selectedInt){showToast("Seleziona l'intensità",'error');return;}
+  const cfg=eventMap[selectedEvent]||eventMap.custom;
+  if(editingEntryId){
+    const en=entries.find(item=>item.id===editingEntryId);
+    if(!en){showToast('Evento non trovato','error');resetEntryForm();return;}
+    en.type=selectedEvent;
+    en.event=cfg.label;
+    en.intensity=selectedInt;
+    saveData();updateStats();renderCalendar();renderEntries();resetEntryForm();
+    showToast('Evento modificato','success');
+    return;
+  }
   addEvent(selectedEvent,selectedInt);
-  document.querySelectorAll('#event-types .event-btn').forEach(b=>b.classList.remove('selected'));
-  document.querySelectorAll('.intensity-btn').forEach(b=>b.classList.remove('selected'));
-  selectedEvent='';selectedInt=0;
-  alert('Evento registrato nel calendario.');
+  resetEntryForm();
+  showToast('Evento registrato nel calendario','success');
 }
 function markWin(){
-  wins++;
   addEvent('resisted','—');
-  alert('Registrato. Brava.');
+  showToast('Registrato. Brava.','success');
+}
+function editEntry(id){
+  const en=entries.find(item=>item.id===id);
+  if(!en){showToast('Evento non trovato','error');return;}
+  editingEntryId=id;
+  setEntryForm(eventMap[en.type]?en.type:'',en.intensity);
+  const saveBtn=document.getElementById('diary-save-btn'),cancelBtn=document.getElementById('diary-cancel-btn');
+  if(saveBtn)saveBtn.textContent='Salva modifiche';
+  if(cancelBtn)cancelBtn.classList.remove('hidden');
+  showToast('Modifica evento attiva');
+}
+function deleteEntry(id){
+  const before=entries.length;
+  entries=entries.filter(item=>item.id!==id);
+  if(entries.length===before){showToast('Evento non trovato','error');return;}
+  if(editingEntryId===id)resetEntryForm();
+  saveData();updateStats();renderCalendar();renderEntries();
+  showToast('Evento eliminato','success');
 }
 function changeMonth(delta){
   calendarDate=new Date(calendarDate.getFullYear(),calendarDate.getMonth()+delta,1);
@@ -963,6 +1050,7 @@ function renderCalendar(){
   }
   grid.innerHTML=html;
 }
+function safeId(id){return String(id).replace(/[^a-zA-Z0-9_-]/g,'');}
 function renderEntries(){
   const c=document.getElementById('entries-list'),title=document.getElementById('entries-title');
   if(!c)return;
@@ -971,7 +1059,8 @@ function renderEntries(){
   if(!list.length){c.innerHTML='<div class="card empty-state">Nessun evento registrato qui.</div>';return;}
   c.innerHTML='<div class="card">'+list.map(en=>{
     const intensity=en.intensity&&en.intensity!=='—'?'Int. '+en.intensity+'/10':'';
-    return '<div class="entry-item"><span class="entry-dot" style="background:'+eventColor(en)+'"></span><div class="entry-body"><div class="entry-time">'+entryDateLabel(entryDay(en))+(entryTime(en)?' · '+entryTime(en):'')+'</div><div class="entry-mood">'+eventLabel(en)+'</div></div>'+(intensity?'<span class="entry-pill">'+intensity+'</span>':'')+'</div>';
+    const id=safeId(en.id);
+    return '<div class="entry-item"><span class="entry-dot" style="background:'+eventColor(en)+'"></span><div class="entry-body"><div class="entry-time">'+entryDateLabel(entryDay(en))+(entryTime(en)?' · '+entryTime(en):'')+'</div><div class="entry-mood">'+eventLabel(en)+'</div><div class="entry-actions"><button type="button" onclick="editEntry(\''+id+'\')">Modifica</button><button type="button" class="danger" onclick="deleteEntry(\''+id+'\')">Elimina</button></div></div>'+(intensity?'<span class="entry-pill">'+intensity+'</span>':'')+'</div>';
   }).join('')+'</div>';
 }
 
@@ -999,7 +1088,7 @@ function setupTapAnimations(){
   },true);
 }
 
-loadData();updateStats();renderCalendar();renderEntries();newQuote();updateAppHeader('tab-home');setupSwipeNavigation();setupTapAnimations();
+setupAppShell();loadData();updateStats();renderCalendar();renderEntries();newQuote();updateAppHeader('tab-home');setupSwipeNavigation();setupTapAnimations();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
 </script>
 </body>
